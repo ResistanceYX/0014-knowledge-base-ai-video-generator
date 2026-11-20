@@ -1,0 +1,33 @@
+{
+  "name": "0014-knowledge-base-ai-video-generator",
+  "version": "0.1.0-m1",
+  "private": true,
+  "type": "module",
+  "description": "idea-tree #0014 的独立简易实现：单节点到带来源映射的离线脚本与分镜（M1）",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.22.3 <25"
+  },
+  "bin": {
+    "0014-knowledge-base-ai-video-generator": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm test && npm run build",
+    "generate": "npm run build --silent && node dist/cli.js generate",
+    "validate-script": "npm run build --silent && node dist/cli.js validate-script",
+    "example": "npm run generate -- --input examples/synthetic-node/source.yaml --output examples/synthetic-node/generated --synthetic --force"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1"
+  }
+}
