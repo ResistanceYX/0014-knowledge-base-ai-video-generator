@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  m1-script-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Generate and validate synthetic project outside repository
+        run: |
+          npm run generate -- --input examples/synthetic-node/source.yaml --output "$RUNNER_TEMP/synthetic-project" --synthetic
+          npm run validate-script -- --project "$RUNNER_TEMP/synthetic-project"
