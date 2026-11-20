@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/0014-knowledge-base-ai-video-generator/cost-schema-0.1.0.json",
+  "title": "M1 离线脚本成本记录",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sourceSnapshotSha256", "mode", "externalCalls", "optionalServicesPricing", "localCompute", "retries", "manualRevisionRounds"],
+  "properties": {
+    "schemaVersion": {"const": "0.1.0"},
+    "sourceSnapshotSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mode": {"const": "offline-template"},
+    "externalCalls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "count", "apiFees"],
+      "properties": {
+        "status": {"const": "none"},
+        "count": {"const": 0},
+        "apiFees": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["amount", "currency", "note"],
+          "properties": {
+            "amount": {"const": 0},
+            "currency": {"type": "null"},
+            "note": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "optionalServicesPricing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "queriedAt", "note"],
+      "properties": {
+        "status": {"const": "unknown"},
+        "queriedAt": {"type": "null"},
+        "note": {"type": "string", "minLength": 1}
+      }
+    },
+    "localCompute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "durationMs", "monetaryCost", "note"],
+      "properties": {
+        "status": {"const": "measured"},
+        "durationMs": {"type": "number", "minimum": 0},
+        "monetaryCost": {"const": "not-estimated"},
+        "note": {"type": "string", "minLength": 1}
+      }
+    },
+    "retries": {"type": "integer", "minimum": 0},
+    "manualRevisionRounds": {"type": "integer", "minimum": 0}
+  }
+}

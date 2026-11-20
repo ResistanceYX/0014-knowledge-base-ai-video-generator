@@ -1,0 +1,363 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/0014-knowledge-base-ai-video-generator/scene-schema-0.1.0.json",
+  "title": "知识节点证据化视频 Scene Schema（M1 0.1.0）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "sourceSnapshot",
+    "node",
+    "video",
+    "scenes",
+    "scriptReview"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1.0"
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "sourceSnapshot": {
+      "$ref": "#/$defs/sourceSnapshot"
+    },
+    "node": {
+      "$ref": "#/$defs/nodeSummary"
+    },
+    "video": {
+      "$ref": "#/$defs/video"
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/scene"
+      }
+    },
+    "scriptReview": {
+      "$ref": "#/$defs/review"
+    }
+  },
+  "$defs": {
+    "sourceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceType",
+        "originalUrl",
+        "normalizedUrl",
+        "commit",
+        "retrievedAt",
+        "fileSha256",
+        "nodeFormatVersion",
+        "parserVersion",
+        "license"
+      ],
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "github-public-node",
+            "local-yaml",
+            "synthetic-fixture"
+          ]
+        },
+        "originalUrl": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "normalizedUrl": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "retrievedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fileSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "nodeFormatVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parserVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "spdxId",
+            "referenceUrl",
+            "notice"
+          ],
+          "properties": {
+            "spdxId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "referenceUrl": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uri"
+            },
+            "notice": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "nodeSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "id",
+        "title",
+        "archiveType",
+        "revivalStatus"
+      ],
+      "properties": {
+        "number": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "archiveType": {
+          "enum": [
+            "预审",
+            "验尸"
+          ]
+        },
+        "revivalStatus": {
+          "enum": [
+            "死透",
+            "复活候选",
+            "已复活"
+          ]
+        },
+        "conclusionBoundary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fps",
+        "width",
+        "height",
+        "aspectRatio"
+      ],
+      "properties": {
+        "fps": {
+          "const": 30
+        },
+        "width": {
+          "const": 1280
+        },
+        "height": {
+          "const": 720
+        },
+        "aspectRatio": {
+          "const": "16:9"
+        }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sceneId",
+        "order",
+        "type",
+        "durationSeconds",
+        "narrationSegments",
+        "visual"
+      ],
+      "properties": {
+        "sceneId": {
+          "type": "string",
+          "pattern": "^scene-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "type": {
+          "enum": [
+            "Title",
+            "Idea",
+            "DeathReason",
+            "EvidenceAndLimits",
+            "ReusableParts",
+            "Outro"
+          ]
+        },
+        "durationSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 120
+        },
+        "narrationSegments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/narrationSegment"
+          }
+        },
+        "visual": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "heading",
+            "bodyLines",
+            "accentColor"
+          ],
+          "properties": {
+            "heading": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "bodyLines": {
+              "type": "array",
+              "maxItems": 8,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              }
+            },
+            "accentColor": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        }
+      }
+    },
+    "narrationSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segmentId",
+        "text",
+        "kind"
+      ],
+      "properties": {
+        "segmentId": {
+          "type": "string",
+          "pattern": "^seg-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "kind": {
+          "enum": [
+            "factual",
+            "transition",
+            "editorial",
+            "placeholder"
+          ]
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer",
+        "reviewedAt"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unreviewed",
+            "approved",
+            "changes-requested"
+          ]
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "reviewedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reviewer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reviewedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
