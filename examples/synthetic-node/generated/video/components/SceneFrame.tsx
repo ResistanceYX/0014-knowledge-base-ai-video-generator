@@ -1,6 +1,6 @@
 import React from "react";
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from "remotion";
-import {sceneDocument} from "../data";
+import {mediaPlan, sceneDocument} from "../data";
 import type {SceneProps} from "../types";
 
 export const fontFamily = '"Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif';
@@ -17,14 +17,22 @@ export const SceneFrame: React.FC<SceneProps & {kicker: string; children: React.
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const enter = spring({frame, fps, config: {damping: 200}});
-  const opacity = interpolate(frame, [0, 10, Math.max(11, timing.durationInFrames - 8), timing.durationInFrames - 1], [0, 1, 1, 0.85], {extrapolateLeft: "clamp", extrapolateRight: "clamp"});
+  const fadeInEnd = Math.min(10, Math.max(1, timing.durationInFrames - 2));
+  const fadeIn = timing.durationInFrames === 1 ? 1 : interpolate(frame, [0, fadeInEnd], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp"});
+  const fadeOut = timing.durationInFrames > 12 ? interpolate(frame, [timing.durationInFrames - 8, timing.durationInFrames - 1], [1, 0.85], {extrapolateLeft: "clamp", extrapolateRight: "clamp"}) : 1;
+  const opacity = fadeIn * fadeOut;
   const accent = scene.visual.accentColor;
-  const activeTiming = timing.segments.find((item) => frame >= item.from && frame < item.from + item.durationInFrames) ?? timing.segments[0];
-  const activeSegment = scene.narrationSegments.find((item) => item.segmentId === activeTiming?.segmentId) ?? scene.narrationSegments[0];
+  const activeTiming = timing.segments.find((item) => {
+    const from = item.from + Math.round((item.subtitleOffsetMs ?? 0) * fps / 1000);
+    const duration = item.subtitleDurationMs === undefined ? item.durationInFrames : Math.max(1, Math.round(item.subtitleDurationMs * fps / 1000));
+    return frame >= from && frame < from + duration;
+  });
+  const activeSegment = scene.narrationSegments.find((item) => item.segmentId === activeTiming?.segmentId);
   const sourcePointers = [...new Set(entries.flatMap((entry) => entry.sources.map((source) => source.jsonPointer)))];
   const qualifierCount = new Set(entries.flatMap((entry) => entry.qualifiers)).size;
   const needsEvidence = entries.some((entry) => entry.supportStatus === "needs-evidence");
   const reviewLabel = sceneDocument.scriptReview.status === "approved" ? "已人工审校 · 本地文件" : sceneDocument.scriptReview.status === "changes-requested" ? "审校要求修改 · 本地草稿" : "未人工审校 · 本地草稿";
+  const subtitleLabel = mediaPlan.speech.mode === "none" ? "估算字幕草稿" : mediaPlan.speech.mode === "fixture" ? "音调测试 · 非语音" : "按音频片段对齐";
   const progress = Math.min(1, Math.max(0, frame / Math.max(1, timing.durationInFrames - 1)));
 
   return (
@@ -36,6 +44,7 @@ export const SceneFrame: React.FC<SceneProps & {kicker: string; children: React.
           <div><b style={{color: accent}}>IDEA–TREE</b>&nbsp; / &nbsp;#{sceneDocument.node.number} &nbsp;·&nbsp; {scene.order}/{sceneDocument.scenes.length}</div>
           <div style={{display: "flex", gap: 10, alignItems: "center"}}>
             <span>{sceneDocument.node.archiveType} · {sceneDocument.node.revivalStatus}</span>
+            <span style={{border: "1px solid #d6a84f", borderRadius: 5, padding: "4px 8px", color: "#ffe0a3", letterSpacing: 0, fontWeight: 700}}>AI 生成 · 人工复核</span>
             <span style={{border: "1px solid #42536a", borderRadius: 5, padding: "4px 8px", color: "#d6e1ee", letterSpacing: 0}}>{reviewLabel}</span>
           </div>
         </header>
@@ -44,8 +53,9 @@ export const SceneFrame: React.FC<SceneProps & {kicker: string; children: React.
           <h1 style={{fontSize: fitFont(scene.visual.heading, 42, 30), lineHeight: 1.18, margin: "7px 0 0", maxHeight: 102, overflow: "hidden", overflowWrap: "anywhere"}}>{scene.visual.heading}</h1>
         </div>
         <main style={{flex: 1, minHeight: 0, transform: `translateY(${(1 - enter) * 20}px)`, opacity: enter, overflow: "hidden"}}>{children}</main>
-        <section aria-label="字幕草稿" style={{height: 60, flex: "0 0 60px", borderLeft: `3px solid ${accent}`, padding: "6px 14px", background: "#0b1829dd", boxSizing: "border-box", display: "flex", alignItems: "center"}}>
-          <div style={{fontSize: 19, lineHeight: 1.42, color: "#f4f7fb", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere"}}>{activeSegment?.text ?? "本场景无旁白"}</div>
+        <section aria-label={subtitleLabel} style={{height: 60, flex: "0 0 60px", borderLeft: `3px solid ${accent}`, padding: "6px 14px", background: "#0b1829dd", boxSizing: "border-box", display: "grid", gridTemplateColumns: "132px 1fr", gap: 12, alignItems: "center"}}>
+          <div style={{fontSize: 12, lineHeight: 1.35, color: "#9eb2ca"}}>{subtitleLabel}</div>
+          <div style={{fontSize: 19, lineHeight: 1.42, color: "#f4f7fb", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere"}}>{activeTiming?.subtitleText ?? activeSegment?.text ?? "（无旁白停顿）"}</div>
         </section>
         <footer style={{height: 76, flex: "0 0 76px", borderTop: "1px solid #2a3a4e", paddingTop: 9, boxSizing: "border-box", display: "grid", gridTemplateColumns: "1fr 260px", gap: 20, color: "#a9bacd", fontSize: 14}}>
           <div style={{minWidth: 0}}>
