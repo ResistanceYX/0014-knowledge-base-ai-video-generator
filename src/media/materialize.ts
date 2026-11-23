@@ -1,15 +1,18 @@
 import path from "node:path";
-import {lstat, mkdir, readdir, readFile, writeFile} from "node:fs/promises";
+import {copyFile, lstat, mkdir, readdir, readFile, rm, writeFile} from "node:fs/promises";
 import {createHash} from "node:crypto";
 import {MEDIA_VERSION, PACKAGE_ROOT} from "../config.js";
 import {AppError} from "../errors.js";
 import {readLocalFileLimited} from "../ingest/input.js";
 import {validateProject} from "../project.js";
-import type {MaterializeResult, MediaConfig} from "../types.js";
+import type {MaterializeResult, MediaConfig, SpeechManifest} from "../types.js";
 import {DEFAULT_MEDIA_CONFIG, loadMediaConfig, mediaConfigPath, parseMediaConfig} from "./config.js";
-import {getSpeechAdapter} from "./speech.js";
+import {getSpeechAdapter, refreshSpeechManifest} from "./speech.js";
 import {renderSrt, renderVtt} from "./subtitles.js";
 import {buildMediaPlan, scriptRevision} from "./timeline.js";
+import {ensureSpeechInputFiles, loadSubtitleOverrides, loadTerminology} from "./overrides.js";
+import {safeProjectPath} from "./audio.js";
+import {writePublishArtifacts} from "./publish.js";
 
 export interface MaterializeOptions {
   project: string;
@@ -73,16 +76,53 @@ function dataModule(document: unknown, sourceMap: unknown, plan: unknown): strin
     `export const mediaPlan = ${JSON.stringify(plan, null, 2)} as unknown as MediaPlan;\n`;
 }
 
+async function copyAudioToPublic(project: string, manifest: SpeechManifest | null): Promise<void> {
+  const derived = path.join(project, "video", "public", "audio");
+  try {
+    const info = await lstat(derived);
+    if (info.isSymbolicLink()) throw new AppError("E_OUTPUT_EXISTS", "派生音频目录不得是符号链接", derived);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+  await rm(derived, {recursive: true, force: true});
+  if (!manifest) return;
+  for (const clip of manifest.clips) {
+    const source = safeProjectPath(project, clip.file);
+    const target = await assertSafeOutput(project, path.join("video", "public", clip.publicFile));
+    await mkdir(path.dirname(target), {recursive: true});
+    await copyFile(source, target);
+  }
+}
+
 export async function materializeProject(options: MaterializeOptions): Promise<MaterializeResult> {
   const project = path.resolve(options.project);
   const validated = await validateProject({project, refreshDerived: options.refreshDerived ?? false});
   const config = await loadMediaConfig(project) ?? parseMediaConfig(DEFAULT_MEDIA_CONFIG);
+  await ensureSpeechInputFiles(project);
   const scenesPath = path.join(project, "script", "scenes.json");
   const sourceMapPath = path.join(project, "script", "source-map.json");
   const scenesText = (await readLocalFileLimited(scenesPath)).toString("utf8");
   const sourceMapText = (await readLocalFileLimited(sourceMapPath)).toString("utf8");
   const revision = scriptRevision(scenesText, sourceMapText);
-  const plan = buildMediaPlan(validated.scenes, revision);
+  let manifest: SpeechManifest | null = null;
+  let speech: string;
+  let subtitleOverrides: Awaited<ReturnType<typeof loadSubtitleOverrides>> = {entries: [], sha256: "not-applicable"};
+  if (config.speech.mode === "none") {
+    const provisional = buildMediaPlan(validated.scenes, revision);
+    const speechResult = await getSpeechAdapter("none").synthesize({document: validated.scenes, plan: provisional});
+    speech = await writeOutput(project, path.join("media", "speech", "none.json"), json(speechResult));
+  } else {
+    const terminology = await loadTerminology(project);
+    const refreshed = await refreshSpeechManifest({project, config: config.speech, sourceScriptSha256: revision, terminologySha256: terminology.sha256});
+    manifest = refreshed.manifest;
+    speech = refreshed.filename;
+    subtitleOverrides = await loadSubtitleOverrides(project);
+  }
+  const plan = buildMediaPlan(
+    validated.scenes,
+    revision,
+    manifest ? {manifest, overrides: subtitleOverrides.entries} : undefined,
+  );
   const files = await templateFiles();
   const componentFiles: string[] = [];
   const templateHash = createHash("sha256");
@@ -111,21 +151,22 @@ export async function materializeProject(options: MaterializeOptions): Promise<M
 
   const configFile = mediaConfigPath(project);
   if (!(await loadMediaConfig(project))) await writeOutput(project, path.join("video", "config.json"), json(config));
+  await copyAudioToPublic(project, manifest);
   await writeOutput(project, path.join("video", "data.ts"), dataModule(validated.scenes, validated.sourceMap, plan));
   await writeOutput(project, path.join("media", "plan.json"), json(plan));
   const vtt = await writeOutput(project, path.join("media", "subtitles", "draft.vtt"), renderVtt(validated.scenes, plan));
   const srt = await writeOutput(project, path.join("media", "subtitles", "draft.srt"), renderSrt(validated.scenes, plan));
-  const speechAdapter = getSpeechAdapter(config.speech.mode);
-  const speechResult = await speechAdapter.synthesize({document: validated.scenes, plan});
-  const speech = await writeOutput(project, path.join("media", "speech", "none.json"), json(speechResult));
   await writeOutput(project, path.join("media", "materialization.json"), json({
-    schemaVersion: "0.2.0",
+    schemaVersion: config.schemaVersion,
     mediaVersion: MEDIA_VERSION,
     sourceScriptSha256: revision,
     componentsPreserved: !options.forceComponents,
     componentFiles: files.map((file) => `video/${file.split(path.sep).join("/")}`),
+    speechMode: plan.speech.mode,
+    audioAlignment: plan.speech.alignment,
     templateSha256: templateHash.digest("hex"),
   }));
+  await writePublishArtifacts({project, document: validated.scenes, plan});
 
   return {
     project,

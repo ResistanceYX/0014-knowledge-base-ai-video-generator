@@ -1,3 +1,4 @@
+import {AppError} from "../errors.js";
 import type {MediaPlan, SceneDocument} from "../types.js";
 
 function timestamp(frame: number, fps: number, separator: "." | ","): string {
@@ -30,11 +31,24 @@ export function buildSubtitleCues(document: SceneDocument, plan: MediaPlan): Cue
     for (const segmentTiming of sceneTiming.segments) {
       const segment = scene.narrationSegments.find((item) => item.segmentId === segmentTiming.segmentId);
       if (!segment) continue;
+      const baseFrom = sceneTiming.from + segmentTiming.from;
+      const baseDuration = segmentTiming.durationInFrames;
+      const offsetFrames = Math.round((segmentTiming.subtitleOffsetMs ?? 0) * plan.fps / 1000);
+      const durationFrames = segmentTiming.subtitleDurationMs === undefined
+        ? baseDuration
+        : Math.max(1, Math.round(segmentTiming.subtitleDurationMs * plan.fps / 1000));
+      const sceneEnd = sceneTiming.from + sceneTiming.durationInFrames;
+      const rawFrom = baseFrom + offsetFrames;
+      const rawTo = rawFrom + durationFrames;
+      if (rawFrom >= sceneEnd || rawTo <= sceneTiming.from) throw new AppError("E_MEDIA_CONFIG", `字幕覆盖使片段完全移出场景：${segment.segmentId}`, segment.segmentId);
+      const from = Math.max(sceneTiming.from, rawFrom);
+      const to = Math.min(sceneEnd, rawTo);
+      if (to <= from) throw new AppError("E_MEDIA_CONFIG", `字幕覆盖后的时长无效：${segment.segmentId}`, segment.segmentId);
       cues.push({
         index: cues.length + 1,
-        from: sceneTiming.from + segmentTiming.from,
-        to: sceneTiming.from + segmentTiming.from + segmentTiming.durationInFrames,
-        text: cueText(segment.text),
+        from,
+        to,
+        text: cueText(segmentTiming.subtitleText ?? segment.text),
       });
     }
   }
@@ -47,7 +61,10 @@ export function renderVtt(document: SceneDocument, plan: MediaPlan): string {
     `${timestamp(cue.from, plan.fps, ".")} --> ${timestamp(cue.to, plan.fps, ".")}`,
     cue.text,
   ].join("\n")).join("\n\n");
-  return `WEBVTT\n\nNOTE M2 字幕草稿；按字符数分配时长，未做真实配音或音画同步。\n\n${body}\n`;
+  const note = plan.speech.alignment === "audio-segment"
+    ? "M3 字幕：按真实音频片段对齐；人工覆盖已应用；不承诺词级对齐或唇形同步。"
+    : "M2 字幕草稿；按字符数分配时长，未做真实配音或音画同步。";
+  return `WEBVTT\n\nNOTE ${note}\n\n${body}\n`;
 }
 
 export function renderSrt(document: SceneDocument, plan: MediaPlan): string {

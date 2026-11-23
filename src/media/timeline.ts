@@ -1,7 +1,7 @@
 import {FULL_COMPOSITION_ID} from "../config.js";
 import {AppError} from "../errors.js";
 import {sha256} from "../provenance/pointer.js";
-import type {MediaPlan, MediaSceneTiming, MediaSegmentTiming, SceneDocument} from "../types.js";
+import type {MediaPlan, MediaSceneTiming, MediaSegmentTiming, SceneDocument, SpeechManifest, SubtitleOverride} from "../types.js";
 
 export function sceneCompositionId(sceneId: string): string {
   return `Scene-${sceneId.replace(/[^A-Za-z0-9_-]/g, "-")}`;
@@ -33,11 +33,64 @@ function allocateSegments(scene: SceneDocument["scenes"][number], durationInFram
   return result;
 }
 
-export function buildMediaPlan(document: SceneDocument, sourceScriptSha256: string): MediaPlan {
+function millisecondsToFrames(milliseconds: number, fps: number): number {
+  return Math.max(1, Math.ceil(milliseconds * fps / 1000));
+}
+
+function audioSegments(options: {
+  scene: SceneDocument["scenes"][number];
+  manifest: SpeechManifest;
+  overrides: Map<string, SubtitleOverride>;
+  fps: number;
+}): {segments: MediaSegmentTiming[]; durationInFrames: number} {
+  const {scene, manifest, overrides, fps} = options;
+  const pauseFrames = Math.round(manifest.segmentPauseMs * fps / 1000);
+  const scenePauseFrames = Math.round(manifest.scenePauseMs * fps / 1000);
+  const result: MediaSegmentTiming[] = [];
+  let cursor = 0;
+  for (const [index, segment] of scene.narrationSegments.entries()) {
+    const clip = manifest.clips.find((item) => item.sceneId === scene.sceneId && item.segmentId === segment.segmentId);
+    if (!clip) throw new AppError("E_AUDIO", `配音清单缺少片段 ${segment.segmentId}`, segment.segmentId);
+    const durationInFrames = millisecondsToFrames(clip.durationMs, fps);
+    const override = overrides.get(segment.segmentId);
+    result.push({
+      segmentId: segment.segmentId,
+      from: cursor,
+      durationInFrames,
+      audioFile: clip.publicFile,
+      audioDurationMs: clip.durationMs,
+      manuallyReplaced: clip.manuallyReplaced,
+      ...(override?.text !== undefined ? {subtitleText: override.text} : {}),
+      ...(override?.offsetMs !== undefined ? {subtitleOffsetMs: override.offsetMs} : {}),
+      ...(override?.durationMs !== undefined ? {subtitleDurationMs: override.durationMs} : {}),
+    });
+    cursor += durationInFrames;
+    if (index < scene.narrationSegments.length - 1) cursor += pauseFrames;
+  }
+  return {segments: result, durationInFrames: cursor + scenePauseFrames};
+}
+
+export function buildMediaPlan(
+  document: SceneDocument,
+  sourceScriptSha256: string,
+  audio?: {manifest: SpeechManifest; overrides: SubtitleOverride[]},
+): MediaPlan {
   const scenes: MediaSceneTiming[] = [];
   let sceneFrom = 0;
+  if (audio) {
+    const expected = document.scenes.flatMap((scene) => scene.narrationSegments.map((segment) => `${scene.sceneId}/${segment.segmentId}`)).sort();
+    const actual = audio.manifest.clips.map((clip) => `${clip.sceneId}/${clip.segmentId}`).sort();
+    if (JSON.stringify(expected) !== JSON.stringify(actual)) throw new AppError("E_AUDIO", "配音清单与当前脚本片段不一致", "media/speech");
+    const validSegmentIds = new Set(document.scenes.flatMap((scene) => scene.narrationSegments.map((segment) => segment.segmentId)));
+    const orphan = audio.overrides.find((override) => !validSegmentIds.has(override.segmentId));
+    if (orphan) throw new AppError("E_AUDIO", `字幕覆盖指向不存在的片段：${orphan.segmentId}`, orphan.segmentId);
+  }
+  const overrides = new Map(audio?.overrides.map((override) => [override.segmentId, override]) ?? []);
   for (const scene of document.scenes) {
-    const durationInFrames = Math.round(scene.durationSeconds * document.video.fps);
+    const allocated = audio
+      ? audioSegments({scene, manifest: audio.manifest, overrides, fps: document.video.fps})
+      : {segments: allocateSegments(scene, Math.round(scene.durationSeconds * document.video.fps)), durationInFrames: Math.round(scene.durationSeconds * document.video.fps)};
+    const durationInFrames = allocated.durationInFrames;
     if (!Number.isSafeInteger(durationInFrames) || durationInFrames < 1) {
       throw new AppError("E_MEDIA_CONFIG", `场景 ${scene.sceneId} 的时长无法换算为正整数帧`, scene.sceneId);
     }
@@ -47,13 +100,13 @@ export function buildMediaPlan(document: SceneDocument, sourceScriptSha256: stri
       type: scene.type,
       from: sceneFrom,
       durationInFrames,
-      segments: allocateSegments(scene, durationInFrames),
+      segments: allocated.segments,
     });
     sceneFrom += durationInFrames;
   }
   if (!Number.isSafeInteger(sceneFrom) || sceneFrom < 1) throw new AppError("E_MEDIA_CONFIG", "完整视频时长无效");
   return {
-    schemaVersion: "0.2.0",
+    schemaVersion: audio ? "0.3.0" : "0.2.0",
     projectId: document.projectId,
     fps: document.video.fps,
     width: document.video.width,
@@ -62,6 +115,13 @@ export function buildMediaPlan(document: SceneDocument, sourceScriptSha256: stri
     fullDurationInFrames: sceneFrom,
     scenes,
     sourceScriptSha256,
+    speech: {
+      mode: audio?.manifest.mode ?? "none",
+      alignment: audio ? "audio-segment" : "estimated",
+      clipCount: audio?.manifest.clips.length ?? 0,
+      manuallyReplacedClips: audio?.manifest.clips.filter((clip) => clip.manuallyReplaced).length ?? 0,
+      subtitleOverrides: audio?.overrides.length ?? 0,
+    },
   };
 }
 

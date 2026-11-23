@@ -7,8 +7,10 @@ import {bundle} from "@remotion/bundler";
 import {ensureBrowser, renderMedia, renderStill, selectComposition} from "@remotion/renderer";
 import {PACKAGE_ROOT} from "../config.js";
 import {AppError} from "../errors.js";
-import type {MediaPlan, RenderReport} from "../types.js";
+import {updateMediaCost} from "../cost/media.js";
+import type {MediaPlan, RenderReport, SceneDocument} from "../types.js";
 import {materializeProject} from "./materialize.js";
+import {buildVideoMetadata} from "./publish.js";
 
 export interface RenderArtifactOptions {
   project: string;
@@ -22,33 +24,38 @@ export interface RenderArtifactOptions {
 
 async function inputDigest(project: string): Promise<string> {
   const hash = createHash("sha256");
-  const roots = [path.join(project, "script"), path.join(project, "video")];
-  for (const root of roots) {
+  const roots = ["script", "video", "speech", path.join("audio", "clips"), path.join("media", "speech")];
+  for (const relativeRoot of roots) {
+    const root = path.join(project, relativeRoot);
     async function visit(directory: string): Promise<void> {
       const entries = (await readdir(directory, {withFileTypes: true})).sort((a, b) => a.name.localeCompare(b.name));
       for (const entry of entries) {
         const filename = path.join(directory, entry.name);
         if (entry.isSymbolicLink()) throw new AppError("E_RENDER", "渲染输入不得包含符号链接", filename);
         if (entry.isDirectory()) await visit(filename);
-        else if (entry.isFile() && (/\.(?:json|ts|tsx)$/.test(entry.name) || entry.name === "README.md")) {
-          hash.update(path.relative(project, filename)).update(await readFile(filename));
-        }
+        else if (entry.isFile()) hash.update(path.relative(project, filename)).update(await readFile(filename));
       }
     }
-    await visit(root);
+    try {
+      await visit(root);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
   }
   return hash.digest("hex");
 }
 
 async function makeBundle(project: string): Promise<{serveUrl: string; cleanup: () => Promise<void>}> {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "0014-remotion-bundle-"));
+  const publicDir = path.join(project, "video", "public");
+  await mkdir(publicDir, {recursive: true});
   try {
     const serveUrl = await bundle({
       entryPoint: path.join(project, "video", "index.tsx"),
       outDir,
       enableCaching: false,
       gitSource: null,
-      publicDir: null,
+      publicDir,
       webpackOverride: (config) => ({
         ...config,
         resolve: {
@@ -126,6 +133,8 @@ export async function renderArtifact(options: RenderArtifactOptions): Promise<Re
       if (frameRange && (!Number.isInteger(frameRange[0]) || !Number.isInteger(frameRange[1]) || frameRange[0] < 0 || frameRange[1] < frameRange[0] || frameRange[1] >= composition.durationInFrames)) {
         throw new AppError("E_RENDER", `帧区间必须位于 0—${composition.durationInFrames - 1}，且结束帧不早于开始帧`, frameRange?.join("-"));
       }
+      const hasAudio = materialized.plan.speech.mode !== "none";
+      const document = JSON.parse(await readFile(path.join(project, "script", "scenes.json"), "utf8")) as SceneDocument;
       await renderMedia({
         serveUrl: bundled.serveUrl,
         composition,
@@ -135,8 +144,9 @@ export async function renderArtifact(options: RenderArtifactOptions): Promise<Re
         crf: materialized.config.render.crf,
         concurrency: materialized.config.render.concurrency,
         scale: materialized.config.render.scale,
-        muted: true,
-        enforceAudioTrack: false,
+        muted: !hasAudio,
+        enforceAudioTrack: hasAudio,
+        metadata: buildVideoMetadata(document, materialized.plan),
         overwrite: true,
         x264Preset: "veryfast",
         timeoutInMilliseconds: 120_000,
@@ -144,17 +154,27 @@ export async function renderArtifact(options: RenderArtifactOptions): Promise<Re
       });
     }
     const finishedAt = new Date();
+    const durationMs = Math.round(performance.now() - started);
     const inputSha256 = await inputDigest(project);
-    if (inputSha256 !== inputSha256Before) throw new AppError("E_RENDER", "渲染期间脚本或组件发生变化；请固定输入后重试，本输出不作为可复现结果", output);
+    if (inputSha256 !== inputSha256Before) throw new AppError("E_RENDER", "渲染期间脚本、音频或组件发生变化；请固定输入后重试，本输出不作为可复现结果", output);
+    await updateMediaCost({
+      project,
+      speechMode: materialized.plan.speech.mode,
+      generatedClipCount: materialized.plan.speech.clipCount,
+      manualAudioReplacements: materialized.plan.speech.manuallyReplacedClips,
+      manualSubtitleOverrides: materialized.plan.speech.subtitleOverrides,
+      renderDurationMs: durationMs,
+      localRebuild: options.kind === "video" && Boolean(sceneId || options.frameRange),
+    });
     const report: RenderReport = {
-      schemaVersion: "0.2.0",
+      schemaVersion: materialized.plan.schemaVersion,
       kind: options.kind,
       compositionId,
       sceneId,
       output,
       startedAt: startedAt.toISOString(),
       finishedAt: finishedAt.toISOString(),
-      durationMs: Math.round(performance.now() - started),
+      durationMs,
       frame: options.kind === "still" ? options.frame ?? Math.floor(composition.durationInFrames / 2) : null,
       durationInFrames: composition.durationInFrames,
       renderedFrameRange: options.kind === "video" ? options.frameRange ?? null : null,
@@ -164,8 +184,13 @@ export async function renderArtifact(options: RenderArtifactOptions): Promise<Re
       height: Math.round(composition.height * materialized.config.render.scale),
       scale: materialized.config.render.scale,
       reviewStatus: materialized.reviewStatus,
-      speechMode: "none",
+      speechMode: materialized.plan.speech.mode,
       externalCalls: {count: 0, apiFees: 0},
+      audio: {
+        hasAudio: options.kind === "video" && materialized.plan.speech.mode !== "none",
+        clipCount: options.kind === "video" ? materialized.plan.speech.clipCount : 0,
+        manuallyReplacedClips: options.kind === "video" ? materialized.plan.speech.manuallyReplacedClips : 0,
+      },
       inputSha256,
       localDraft: true,
     };
