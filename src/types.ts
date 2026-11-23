@@ -4,6 +4,7 @@ export type ReviewStatus = "unreviewed" | "approved" | "changes-requested";
 export type SegmentKind = "factual" | "transition" | "editorial" | "placeholder";
 export type SupportStatus = "supported" | "partially-supported" | "needs-evidence" | "not-applicable";
 export type SceneType = "Title" | "Idea" | "DeathReason" | "EvidenceAndLimits" | "ReusableParts" | "Outro";
+export type SpeechMode = "none" | "fixture" | "edge-tts";
 
 export interface DeathRecord {
   类型: string;
@@ -128,6 +129,22 @@ export interface ScriptBundle {
   sourceMap: SourceMapDocument;
 }
 
+export interface MediaCostRecord {
+  schemaVersion: "0.3.0";
+  speechMode: SpeechMode;
+  speechExternalCalls: number;
+  speechRetries: number;
+  speechApiFees: {status: "unknown" | "not-run"; amount: null; currency: null; note: string};
+  renderCount: number;
+  localRebuildCount: number;
+  renderDurationMs: number;
+  speechDurationMs: number;
+  generatedClipCount: number;
+  manualAudioReplacements: number;
+  manualSubtitleOverrides: number;
+  note: string;
+}
+
 export interface CostRecord {
   schemaVersion: "0.1.0";
   sourceSnapshotSha256: string;
@@ -145,6 +162,7 @@ export interface CostRecord {
   localCompute: {status: "measured"; durationMs: number; monetaryCost: "not-estimated"; note: string};
   retries: number;
   manualRevisionRounds: number;
+  media?: MediaCostRecord;
 }
 
 export interface GeneratedProjectPaths {
@@ -159,16 +177,75 @@ export interface GeneratedProjectPaths {
   cost: string;
 }
 
-export interface MediaConfig {
-  schemaVersion: "0.2.0";
-  speech: {mode: "none"};
-  render: {concurrency: number; crf: number; scale: number};
+export interface NoneSpeechConfig {mode: "none"}
+export interface FixtureSpeechConfig {
+  mode: "fixture";
+  segmentDurationMs: number;
+  segmentPauseMs: number;
+  scenePauseMs: number;
+}
+export interface EdgeTtsSpeechConfig {
+  mode: "edge-tts";
+  voice: string;
+  rate: string;
+  timeoutMs: number;
+  maxRetries: number;
+  segmentPauseMs: number;
+  scenePauseMs: number;
+}
+export type SpeechConfig = NoneSpeechConfig | FixtureSpeechConfig | EdgeTtsSpeechConfig;
+export interface RenderConfig {concurrency: number; crf: number; scale: number}
+export type MediaConfig =
+  | {schemaVersion: "0.2.0"; speech: NoneSpeechConfig; render: RenderConfig}
+  | {schemaVersion: "0.3.0"; speech: FixtureSpeechConfig | EdgeTtsSpeechConfig; render: RenderConfig};
+
+export interface SpeechClip {
+  sceneId: string;
+  segmentId: string;
+  file: string;
+  publicFile: string;
+  durationMs: number;
+  sha256: string;
+  generatedSha256: string;
+  manuallyReplaced: boolean;
+  spokenText: string;
+}
+
+export interface SpeechManifest {
+  schemaVersion: "0.3.0";
+  mode: FixtureSpeechConfig["mode"] | EdgeTtsSpeechConfig["mode"];
+  status: "ready";
+  sourceScriptSha256: string;
+  terminologySha256: string;
+  provider: {name: "local-tone-fixture" | "edge-tts"; version: string; voice: string | null; rate: string | null};
+  externalCalls: {
+    count: number;
+    retries: number;
+    apiFees: {status: "unknown" | "not-run"; amount: null; currency: null; note: string};
+  };
+  segmentPauseMs: number;
+  scenePauseMs: number;
+  clips: SpeechClip[];
+  note: string;
+}
+
+export interface SubtitleOverride {
+  segmentId: string;
+  text?: string;
+  offsetMs?: number;
+  durationMs?: number;
 }
 
 export interface MediaSegmentTiming {
   segmentId: string;
   from: number;
   durationInFrames: number;
+  audioFile?: string;
+  audioDurationMs?: number;
+  manuallyReplaced?: boolean;
+  subtitleText?: string;
+  subtitleOffsetMs?: number;
+  subtitleDurationMs?: number;
 }
 
 export interface MediaSceneTiming {
@@ -181,7 +258,7 @@ export interface MediaSceneTiming {
 }
 
 export interface MediaPlan {
-  schemaVersion: "0.2.0";
+  schemaVersion: "0.2.0" | "0.3.0";
   projectId: string;
   fps: 30;
   width: 1280;
@@ -190,6 +267,13 @@ export interface MediaPlan {
   fullDurationInFrames: number;
   scenes: MediaSceneTiming[];
   sourceScriptSha256: string;
+  speech: {
+    mode: SpeechMode;
+    alignment: "estimated" | "audio-segment";
+    clipCount: number;
+    manuallyReplacedClips: number;
+    subtitleOverrides: number;
+  };
 }
 
 export interface MaterializeResult {
@@ -204,7 +288,7 @@ export interface MaterializeResult {
 }
 
 export interface RenderReport {
-  schemaVersion: "0.2.0";
+  schemaVersion: "0.2.0" | "0.3.0";
   kind: "still" | "video";
   compositionId: string;
   sceneId: string | null;
@@ -221,8 +305,9 @@ export interface RenderReport {
   height: number;
   scale: number;
   reviewStatus: ReviewStatus;
-  speechMode: "none";
+  speechMode: SpeechMode;
   externalCalls: {count: 0; apiFees: 0};
+  audio: {hasAudio: boolean; clipCount: number; manuallyReplacedClips: number};
   inputSha256: string;
   localDraft: true;
 }

@@ -28,6 +28,8 @@ export const ERROR_CODES = [
   "E_DERIVED_STALE",
   "E_MEDIA_CONFIG",
   "E_SPEECH_MODE",
+  "E_AUDIO",
+  "E_AUDIO_PROBE",
   "E_COMPOSITION",
   "E_BROWSER",
   "E_RENDER",
