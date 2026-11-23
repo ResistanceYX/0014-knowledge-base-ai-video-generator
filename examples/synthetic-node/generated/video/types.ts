@@ -27,7 +27,17 @@ export interface SourceMapEntry {
   openQuestion: string | null;
 }
 export interface SourceMapDocument {entries: SourceMapEntry[]}
-export interface MediaSegmentTiming {segmentId: string; from: number; durationInFrames: number}
+export interface MediaSegmentTiming {
+  segmentId: string;
+  from: number;
+  durationInFrames: number;
+  audioFile?: string;
+  audioDurationMs?: number;
+  manuallyReplaced?: boolean;
+  subtitleText?: string;
+  subtitleOffsetMs?: number;
+  subtitleDurationMs?: number;
+}
 export interface MediaSceneTiming {
   sceneId: string;
   compositionId: string;
@@ -36,5 +46,10 @@ export interface MediaSceneTiming {
   durationInFrames: number;
   segments: MediaSegmentTiming[];
 }
-export interface MediaPlan {fps: 30; fullDurationInFrames: number; scenes: MediaSceneTiming[]}
+export interface MediaPlan {
+  fps: 30;
+  fullDurationInFrames: number;
+  scenes: MediaSceneTiming[];
+  speech: {mode: "none" | "fixture" | "edge-tts"; alignment: "estimated" | "audio-segment"};
+}
 export interface SceneProps {scene: Scene; entries: SourceMapEntry[]; timing: MediaSceneTiming}

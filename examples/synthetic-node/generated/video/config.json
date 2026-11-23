@@ -1,7 +1,13 @@
 {
-  "schemaVersion": "0.2.0",
+  "schemaVersion": "0.3.0",
   "speech": {
-    "mode": "none"
+    "mode": "edge-tts",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+10%",
+    "timeoutMs": 60000,
+    "maxRetries": 1,
+    "segmentPauseMs": 120,
+    "scenePauseMs": 350
   },
   "render": {
     "concurrency": 2,

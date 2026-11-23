@@ -9,7 +9,7 @@ export const sceneDocument = {
     "originalUrl": null,
     "normalizedUrl": null,
     "commit": null,
-    "retrievedAt": "2026-11-20T16:41:39.539Z",
+    "retrievedAt": "2026-11-23T00:00:00.000Z",
     "fileSha256": "23687ce6224e91463121eca1172ef2ca82cbc693f7287dd697aa03ca0ca9e1f0",
     "nodeFormatVersion": "idea-tree-node-format-v1.9",
     "parserVersion": "0.1.0-m1",
@@ -42,7 +42,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-title",
-          "text": "这是第 9999 号节点《合成证据化视频节点测试档案》。节点档案类型为预审，记录的复活状态为已复活；领域为合成测试，子领域为节点解析与来源映射。",
+          "text": "第 9999 号合成节点处于预审状态，虽然字段标为已复活，也不代表独立验收或真实项目复活。",
           "kind": "factual"
         }
       ],
@@ -64,7 +64,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-idea",
-          "text": "节点的一句话描述是如下（原文）：仅用于验证单节点解析、保守脚本生成和逐句来源映射的合成数据，不对应真实创业点子或真实项目。",
+          "text": "它只验证节点解析、保守脚本和逐句来源映射，不对应真实创业点子，也不证明任何经营成果。",
           "kind": "factual"
         }
       ],
@@ -85,22 +85,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-death-01-label",
-          "text": "第 1 条死法被节点归类为伪需求，节点标注的置信度为低。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-01-evidence",
-          "text": "该条死法记录的证据原文是如下（原文）：合成证据A，仅用于验证证据字段定位，不构成真实事实。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-01-reasoning",
-          "text": "该条死法记录的推理或分析原文是如下（原文）：合成推理A，用于检查脚本是否保留“合成、非真实证据”的限定条件。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-01-case",
-          "text": "该条死法记录的案例原文是如下（原文）：合成案例A",
+          "text": "第一条死法叫伪需求，置信度低。合成证据 A 与推理 A 只用于测试字段定位，不能当作真实事实。",
           "kind": "factual"
         }
       ],
@@ -123,22 +108,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-death-02-label",
-          "text": "第 2 条死法被节点归类为信任成本，节点标注的置信度为低。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-02-evidence",
-          "text": "该条死法记录的证据原文是如下（原文）：合成证据B，仅用于验证第二死法条目的来源定位。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-02-reasoning",
-          "text": "该条死法记录的推理或分析原文是如下（原文）：合成推理B，用于检查实质性陈述是否能够回到指定节点字段。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-02-case",
-          "text": "该条死法记录的案例原文是如下（原文）：合成案例B",
+          "text": "第二条死法叫信任成本，置信度低。证据 B 与推理 B 同样是合成记录，只测试来源能否回到节点字段。",
           "kind": "factual"
         }
       ],
@@ -161,22 +131,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-death-03-label",
-          "text": "第 3 条死法被节点归类为执行人限制，节点标注的置信度为低。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-03-evidence",
-          "text": "该条死法记录的证据原文是如下（原文）：合成证据C，仅用于验证第三死法条目的来源定位。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-03-reasoning",
-          "text": "该条死法记录的推理或分析原文是如下（原文）：合成推理C，用于检查无法定位的陈述是否被标为待补证而不是事实。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-death-03-case",
-          "text": "该条死法记录的案例原文是如下（原文）：合成案例C",
+          "text": "第三条死法叫执行人限制，置信度低。证据 C 与推理 C 仅验证待补证边界，不是现实案例结论。",
           "kind": "factual"
         }
       ],
@@ -199,33 +154,8 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-demand-type",
-          "text": "节点记录的需求证据类型是如下（原文）：合成测试记录",
+          "text": "节点没有真实需求证据，商业价值也未验证。它只证明合成数据能进入测试管线，不证明真实项目复活、实现或发布；外部证据未被访问。",
           "kind": "factual"
-        },
-        {
-          "segmentId": "seg-demand-note",
-          "text": "需求证据说明原文是如下（原文）：没有真实需求证据；本字段只验证需求证据映射可以被解析。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-value-assessment",
-          "text": "节点的商业及社会价值评估原文是如下（原文）：未验证。本合成节点不用于评价真实商业价值、社会价值、采用规模或收入。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-conclusion-boundary",
-          "text": "必须保留的结论边界是如下（原文）：本节点只证明合成数据可以进入测试管线，不证明任何真实项目已复活、已实现或已发布。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-node-note",
-          "text": "节点备注原文是如下（原文）：全部标题、陈述、案例和链接均为合成占位；example.invalid 是保留域名，不得作为真实证据访问或引用。本fixture只用于离线测试，不代表已经发布。",
-          "kind": "factual"
-        },
-        {
-          "segmentId": "seg-evidence-scope",
-          "text": "本阶段只读取节点文本，没有访问其中的外部证据链接，也没有独立核验其真实性。",
-          "kind": "editorial"
         }
       ],
       "visual": {
@@ -246,7 +176,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-reusable-parts",
-          "text": "节点列出的可拆零件是：节点解析与校验测试项；离线保守脚本测试项；逐句来源映射测试项；人工修改后重新校验测试项。",
+          "text": "可拆零件包括节点解析、离线脚本、来源映射和人工复校测试项；这些字段不证明收入、采用或商业闭环。",
           "kind": "factual"
         }
       ],
@@ -270,7 +200,7 @@ export const sceneDocument = {
       "narrationSegments": [
         {
           "segmentId": "seg-outro",
-          "text": "本脚本由离线保守模板生成，当前未经人工审核。发布前请核对原节点、逐句来源、许可和 AI 标识；本工具不自动发布。",
+          "text": "这是未经人工审校的本地合成样片。发布前必须核对原节点、逐句来源、术语读音、许可和 AI 标识；工具不会自动发布。",
           "kind": "editorial"
         }
       ],
@@ -387,67 +317,19 @@ export const sourceMapDocument = {
           "jsonPointer": "/死法/0/置信度",
           "excerpt": "低",
           "fieldRole": "metadata"
-        }
-      ],
-      "qualifiers": [
-        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-01-evidence",
-      "sceneId": "scene-death-01",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/0/证据",
           "excerpt": "合成证据A，仅用于验证证据字段定位，不构成真实事实。",
           "fieldRole": "evidence"
-        }
-      ],
-      "qualifiers": [
-        "证据边界（第1条死法，未经本项目独立核验）：合成证据A，仅用于验证证据字段定位，不构成真实事实。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-01-reasoning",
-      "sceneId": "scene-death-01",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/0/推理",
           "excerpt": "合成推理A，用于检查脚本是否保留“合成、非真实证据”的限定条件。",
           "fieldRole": "reasoning"
-        }
-      ],
-      "qualifiers": [
-        "推理边界（第1条死法，仅为节点记录）：合成推理A，用于检查脚本是否保留“合成、非真实证据”的限定条件。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-01-case",
-      "sceneId": "scene-death-01",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/0/案例",
@@ -456,6 +338,9 @@ export const sourceMapDocument = {
         }
       ],
       "qualifiers": [
+        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。",
+        "证据边界（第1条死法，未经本项目独立核验）：合成证据A，仅用于验证证据字段定位，不构成真实事实。",
+        "推理边界（第1条死法，仅为节点记录）：合成推理A，用于检查脚本是否保留“合成、非真实证据”的限定条件。",
         "案例仅按节点原文复述，未经本项目独立核验。"
       ],
       "openQuestion": null,
@@ -481,67 +366,19 @@ export const sourceMapDocument = {
           "jsonPointer": "/死法/1/置信度",
           "excerpt": "低",
           "fieldRole": "metadata"
-        }
-      ],
-      "qualifiers": [
-        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-02-evidence",
-      "sceneId": "scene-death-02",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/1/证据",
           "excerpt": "合成证据B，仅用于验证第二死法条目的来源定位。",
           "fieldRole": "evidence"
-        }
-      ],
-      "qualifiers": [
-        "证据边界（第2条死法，未经本项目独立核验）：合成证据B，仅用于验证第二死法条目的来源定位。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-02-reasoning",
-      "sceneId": "scene-death-02",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/1/推理",
           "excerpt": "合成推理B，用于检查实质性陈述是否能够回到指定节点字段。",
           "fieldRole": "reasoning"
-        }
-      ],
-      "qualifiers": [
-        "推理边界（第2条死法，仅为节点记录）：合成推理B，用于检查实质性陈述是否能够回到指定节点字段。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-02-case",
-      "sceneId": "scene-death-02",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/1/案例",
@@ -550,6 +387,9 @@ export const sourceMapDocument = {
         }
       ],
       "qualifiers": [
+        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。",
+        "证据边界（第2条死法，未经本项目独立核验）：合成证据B，仅用于验证第二死法条目的来源定位。",
+        "推理边界（第2条死法，仅为节点记录）：合成推理B，用于检查实质性陈述是否能够回到指定节点字段。",
         "案例仅按节点原文复述，未经本项目独立核验。"
       ],
       "openQuestion": null,
@@ -575,67 +415,19 @@ export const sourceMapDocument = {
           "jsonPointer": "/死法/2/置信度",
           "excerpt": "低",
           "fieldRole": "metadata"
-        }
-      ],
-      "qualifiers": [
-        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-03-evidence",
-      "sceneId": "scene-death-03",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/2/证据",
           "excerpt": "合成证据C，仅用于验证第三死法条目的来源定位。",
           "fieldRole": "evidence"
-        }
-      ],
-      "qualifiers": [
-        "证据边界（第3条死法，未经本项目独立核验）：合成证据C，仅用于验证第三死法条目的来源定位。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-03-reasoning",
-      "sceneId": "scene-death-03",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/2/推理",
           "excerpt": "合成推理C，用于检查无法定位的陈述是否被标为待补证而不是事实。",
           "fieldRole": "reasoning"
-        }
-      ],
-      "qualifiers": [
-        "推理边界（第3条死法，仅为节点记录）：合成推理C，用于检查无法定位的陈述是否被标为待补证而不是事实。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-death-03-case",
-      "sceneId": "scene-death-03",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/死法/2/案例",
@@ -644,6 +436,9 @@ export const sourceMapDocument = {
         }
       ],
       "qualifiers": [
+        "分类标签和置信度均为节点记录，不把标签本身当作事实证明。",
+        "证据边界（第3条死法，未经本项目独立核验）：合成证据C，仅用于验证第三死法条目的来源定位。",
+        "推理边界（第3条死法，仅为节点记录）：合成推理C，用于检查无法定位的陈述是否被标为待补证而不是事实。",
         "案例仅按节点原文复述，未经本项目独立核验。"
       ],
       "openQuestion": null,
@@ -663,86 +458,25 @@ export const sourceMapDocument = {
           "jsonPointer": "/需求证据/类型",
           "excerpt": "合成测试记录",
           "fieldRole": "evidence"
-        }
-      ],
-      "qualifiers": [],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-demand-note",
-      "sceneId": "scene-evidence-limits",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/需求证据/说明",
           "excerpt": "没有真实需求证据；本字段只验证需求证据映射可以被解析。",
           "fieldRole": "evidence"
-        }
-      ],
-      "qualifiers": [],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-value-assessment",
-      "sceneId": "scene-evidence-limits",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/商业及社会价值评估",
           "excerpt": "未验证。本合成节点不用于评价真实商业价值、社会价值、采用规模或收入。",
           "fieldRole": "limit"
-        }
-      ],
-      "qualifiers": [
-        "评估原文不等于本项目已验证商业闭环。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-conclusion-boundary",
-      "sceneId": "scene-evidence-limits",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/结论边界",
           "excerpt": "本节点只证明合成数据可以进入测试管线，不证明任何真实项目已复活、已实现或已发布。",
           "fieldRole": "limit"
-        }
-      ],
-      "qualifiers": [
-        "限定条件（结论边界）：本节点只证明合成数据可以进入测试管线，不证明任何真实项目已复活、已实现或已发布。",
-        "状态边界：档案类型=预审；复活状态=已复活；不代表本项目独立验收、真实复活或商业闭环。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-node-note",
-      "sceneId": "scene-evidence-limits",
-      "supportStatus": "supported",
-      "sources": [
+        },
         {
           "kind": "node-field",
           "jsonPointer": "/备注",
@@ -751,21 +485,10 @@ export const sourceMapDocument = {
         }
       ],
       "qualifiers": [
-        "限定条件（备注）：全部标题、陈述、案例和链接均为合成占位；example.invalid 是保留域名，不得作为真实证据访问或引用。本fixture只用于离线测试，不代表已经发布。"
-      ],
-      "openQuestion": null,
-      "review": {
-        "status": "unreviewed",
-        "reviewer": null,
-        "reviewedAt": null
-      }
-    },
-    {
-      "segmentId": "seg-evidence-scope",
-      "sceneId": "scene-evidence-limits",
-      "supportStatus": "not-applicable",
-      "sources": [],
-      "qualifiers": [
+        "评估原文不等于本项目已验证商业闭环。",
+        "限定条件（结论边界）：本节点只证明合成数据可以进入测试管线，不证明任何真实项目已复活、已实现或已发布。",
+        "状态边界：档案类型=预审；复活状态=已复活；不代表本项目独立验收、真实复活或商业闭环。",
+        "限定条件（备注）：全部标题、陈述、案例和链接均为合成占位；example.invalid 是保留域名，不得作为真实证据访问或引用。本fixture只用于离线测试，不代表已经发布。",
         "证据链接的公开可访问不等于内容真实，也不等于获得改编授权。"
       ],
       "openQuestion": null,
@@ -834,25 +557,28 @@ export const sourceMapDocument = {
 } as unknown as SourceMapDocument;
 
 export const mediaPlan = {
-  "schemaVersion": "0.2.0",
+  "schemaVersion": "0.3.0",
   "projectId": "9999-synthetic-evidence-video-node",
   "fps": 30,
   "width": 1280,
   "height": 720,
   "fullCompositionId": "IdeaTreeFull",
-  "fullDurationInFrames": 7590,
+  "fullDurationInFrames": 2557,
   "scenes": [
     {
       "sceneId": "scene-title",
       "compositionId": "Scene-scene-title",
       "type": "Title",
       "from": 0,
-      "durationInFrames": 540,
+      "durationInFrames": 282,
       "segments": [
         {
           "segmentId": "seg-title",
           "from": 0,
-          "durationInFrames": 540
+          "durationInFrames": 271,
+          "audioFile": "audio/clips/scene-title/seg-title.mp3",
+          "audioDurationMs": 9024,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -860,13 +586,16 @@ export const mediaPlan = {
       "sceneId": "scene-idea",
       "compositionId": "Scene-scene-idea",
       "type": "Idea",
-      "from": 540,
-      "durationInFrames": 480,
+      "from": 282,
+      "durationInFrames": 261,
       "segments": [
         {
           "segmentId": "seg-idea",
           "from": 0,
-          "durationInFrames": 480
+          "durationInFrames": 250,
+          "audioFile": "audio/clips/scene-idea/seg-idea.mp3",
+          "audioDurationMs": 8328,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -874,28 +603,16 @@ export const mediaPlan = {
       "sceneId": "scene-death-01",
       "compositionId": "Scene-scene-death-01",
       "type": "DeathReason",
-      "from": 1020,
-      "durationInFrames": 1140,
+      "from": 543,
+      "durationInFrames": 307,
       "segments": [
         {
           "segmentId": "seg-death-01-label",
           "from": 0,
-          "durationInFrames": 211
-        },
-        {
-          "segmentId": "seg-death-01-evidence",
-          "from": 211,
-          "durationInFrames": 340
-        },
-        {
-          "segmentId": "seg-death-01-reasoning",
-          "from": 551,
-          "durationInFrames": 408
-        },
-        {
-          "segmentId": "seg-death-01-case",
-          "from": 959,
-          "durationInFrames": 181
+          "durationInFrames": 296,
+          "audioFile": "audio/clips/scene-death-01/seg-death-01-label.mp3",
+          "audioDurationMs": 9864,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -903,28 +620,16 @@ export const mediaPlan = {
       "sceneId": "scene-death-02",
       "compositionId": "Scene-scene-death-02",
       "type": "DeathReason",
-      "from": 2160,
-      "durationInFrames": 1110,
+      "from": 850,
+      "durationInFrames": 325,
       "segments": [
         {
           "segmentId": "seg-death-02-label",
           "from": 0,
-          "durationInFrames": 222
-        },
-        {
-          "segmentId": "seg-death-02-evidence",
-          "from": 222,
-          "durationInFrames": 322
-        },
-        {
-          "segmentId": "seg-death-02-reasoning",
-          "from": 544,
-          "durationInFrames": 382
-        },
-        {
-          "segmentId": "seg-death-02-case",
-          "from": 926,
-          "durationInFrames": 184
+          "durationInFrames": 314,
+          "audioFile": "audio/clips/scene-death-02/seg-death-02-label.mp3",
+          "audioDurationMs": 10464,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -932,28 +637,16 @@ export const mediaPlan = {
       "sceneId": "scene-death-03",
       "compositionId": "Scene-scene-death-03",
       "type": "DeathReason",
-      "from": 3270,
-      "durationInFrames": 1140,
+      "from": 1175,
+      "durationInFrames": 312,
       "segments": [
         {
           "segmentId": "seg-death-03-label",
           "from": 0,
-          "durationInFrames": 230
-        },
-        {
-          "segmentId": "seg-death-03-evidence",
-          "from": 230,
-          "durationInFrames": 321
-        },
-        {
-          "segmentId": "seg-death-03-reasoning",
-          "from": 551,
-          "durationInFrames": 405
-        },
-        {
-          "segmentId": "seg-death-03-case",
-          "from": 956,
-          "durationInFrames": 184
+          "durationInFrames": 301,
+          "audioFile": "audio/clips/scene-death-03/seg-death-03-label.mp3",
+          "audioDurationMs": 10008,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -961,38 +654,16 @@ export const mediaPlan = {
       "sceneId": "scene-evidence-limits",
       "compositionId": "Scene-scene-evidence-limits",
       "type": "EvidenceAndLimits",
-      "from": 4410,
-      "durationInFrames": 2340,
+      "from": 1487,
+      "durationInFrames": 388,
       "segments": [
         {
           "segmentId": "seg-demand-type",
           "from": 0,
-          "durationInFrames": 188
-        },
-        {
-          "segmentId": "seg-demand-note",
-          "from": 188,
-          "durationInFrames": 322
-        },
-        {
-          "segmentId": "seg-value-assessment",
-          "from": 510,
-          "durationInFrames": 420
-        },
-        {
-          "segmentId": "seg-conclusion-boundary",
-          "from": 930,
-          "durationInFrames": 428
-        },
-        {
-          "segmentId": "seg-node-note",
-          "from": 1358,
-          "durationInFrames": 705
-        },
-        {
-          "segmentId": "seg-evidence-scope",
-          "from": 2063,
-          "durationInFrames": 277
+          "durationInFrames": 377,
+          "audioFile": "audio/clips/scene-evidence-limits/seg-demand-type.mp3",
+          "audioDurationMs": 12552,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -1000,13 +671,16 @@ export const mediaPlan = {
       "sceneId": "scene-reusable-parts",
       "compositionId": "Scene-scene-reusable-parts",
       "type": "ReusableParts",
-      "from": 6750,
-      "durationInFrames": 420,
+      "from": 1875,
+      "durationInFrames": 313,
       "segments": [
         {
           "segmentId": "seg-reusable-parts",
           "from": 0,
-          "durationInFrames": 420
+          "durationInFrames": 302,
+          "audioFile": "audio/clips/scene-reusable-parts/seg-reusable-parts.mp3",
+          "audioDurationMs": 10056,
+          "manuallyReplaced": false
         }
       ]
     },
@@ -1014,16 +688,26 @@ export const mediaPlan = {
       "sceneId": "scene-outro",
       "compositionId": "Scene-scene-outro",
       "type": "Outro",
-      "from": 7170,
-      "durationInFrames": 420,
+      "from": 2188,
+      "durationInFrames": 369,
       "segments": [
         {
           "segmentId": "seg-outro",
           "from": 0,
-          "durationInFrames": 420
+          "durationInFrames": 358,
+          "audioFile": "audio/clips/scene-outro/seg-outro.mp3",
+          "audioDurationMs": 11904,
+          "manuallyReplaced": false
         }
       ]
     }
   ],
-  "sourceScriptSha256": "bd474e414163c3558c90a6224255e2391b44173d388d8a05b8e7123b9a81f77e"
+  "sourceScriptSha256": "7bd2d525694c2a72ddb2fce4c71552a64bba9003aa6b1674723702d84494a7dc",
+  "speech": {
+    "mode": "edge-tts",
+    "alignment": "audio-segment",
+    "clipCount": 8,
+    "manuallyReplacedClips": 0,
+    "subtitleOverrides": 0
+  }
 } as unknown as MediaPlan;

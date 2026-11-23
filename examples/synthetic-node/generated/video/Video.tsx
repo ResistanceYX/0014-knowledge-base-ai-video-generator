@@ -1,5 +1,5 @@
 import React from "react";
-import {AbsoluteFill, Series} from "remotion";
+import {AbsoluteFill, Audio, Sequence, Series, staticFile} from "remotion";
 import {mediaPlan, sceneDocument, sourceMapDocument} from "./data";
 import type {SceneProps, SceneType} from "./types";
 import {Title} from "./components/Title";
@@ -18,13 +18,32 @@ const templates: Record<SceneType, React.ComponentType<SceneProps>> = {
   Outro,
 };
 
+const SceneAudio: React.FC<{sceneId: string}> = ({sceneId}) => {
+  const timing = mediaPlan.scenes.find((item) => item.sceneId === sceneId);
+  if (!timing) return null;
+  return (
+    <>
+      {timing.segments.map((segment) => segment.audioFile ? (
+        <Sequence key={segment.segmentId} from={segment.from} durationInFrames={segment.durationInFrames}>
+          <Audio src={staticFile(segment.audioFile)} />
+        </Sequence>
+      ) : null)}
+    </>
+  );
+};
+
 const SceneContent: React.FC<{sceneId: string}> = ({sceneId}) => {
   const scene = sceneDocument.scenes.find((item) => item.sceneId === sceneId);
   const timing = mediaPlan.scenes.find((item) => item.sceneId === sceneId);
   if (!scene || !timing) return <AbsoluteFill style={{background: "#07111f", color: "white", padding: 80}}>未知场景：{sceneId}</AbsoluteFill>;
   const Template = templates[scene.type];
   const entries = sourceMapDocument.entries.filter((entry) => entry.sceneId === sceneId);
-  return <Template scene={scene} entries={entries} timing={timing} />;
+  return (
+    <>
+      <Template scene={scene} entries={entries} timing={timing} />
+      <SceneAudio sceneId={sceneId} />
+    </>
+  );
 };
 
 export const FullVideo: React.FC = () => (
