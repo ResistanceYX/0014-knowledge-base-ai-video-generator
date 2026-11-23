@@ -1,9 +1,9 @@
 {
   "name": "0014-knowledge-base-ai-video-generator",
-  "version": "0.2.0-m2",
+  "version": "0.3.0-m3",
   "private": true,
   "type": "module",
-  "description": "idea-tree #0014 的独立简易实现：带来源映射的脚本、可编辑 Remotion 工程、字幕草稿与无声 MP4（M2）",
+  "description": "idea-tree #0014 的独立简易实现：带来源映射的脚本、可编辑 Remotion 工程、真实音频时间轴、AI 标识与发布前检查（M3）",
   "license": "MIT",
   "engines": {
     "node": ">=24.22.3 <25"
@@ -15,13 +15,15 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.video.json",
     "test": "vitest run",
-    "test:render": "npm run build --silent && node scripts/render-smoke.mjs",
+    "test:render": "npm run build --silent && node scripts/render-smoke.mjs && node scripts/render-audio-smoke.mjs",
     "check": "npm run typecheck && npm test && npm run build",
     "generate": "npm run build --silent && node dist/cli.js generate",
     "validate-script": "npm run build --silent && node dist/cli.js validate-script",
     "materialize": "npm run build --silent && node dist/cli.js materialize",
+    "speech": "npm run build --silent && node dist/cli.js speech",
     "preview": "npm run build --silent && node dist/cli.js preview",
     "render": "npm run build --silent && node dist/cli.js render",
+    "publish-check": "npm run build --silent && node dist/cli.js publish-check",
     "example": "npm run generate -- --input examples/synthetic-node/source.yaml --output examples/synthetic-node/generated --synthetic --force && npm run materialize -- --project examples/synthetic-node/generated --force-components"
   },
   "dependencies": {
