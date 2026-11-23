@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  m2-script-and-render:
+  m3-script-audio-and-render:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -27,5 +27,5 @@ jobs:
           npm run materialize -- --project "$RUNNER_TEMP/synthetic-project"
       - name: Prepare Remotion headless browser
         run: node --input-type=module -e "import {ensureBrowser} from '@remotion/renderer'; const status = await ensureBrowser(); if (status.type === 'no-browser' || status.type === 'version-mismatch') throw new Error(status.type); console.log(status);"
-      - name: Render short scenes, full concatenation and local rebuild
+      - name: Render silent regression and real-audio fixture without external speech
         run: npm run test:render
