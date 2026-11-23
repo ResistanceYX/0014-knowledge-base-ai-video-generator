@@ -26,6 +26,11 @@ export const ERROR_CODES = [
   "E_REVIEW_REQUIRED",
   "E_PAID_GATE",
   "E_DERIVED_STALE",
+  "E_MEDIA_CONFIG",
+  "E_SPEECH_MODE",
+  "E_COMPOSITION",
+  "E_BROWSER",
+  "E_RENDER",
 ] as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[number];

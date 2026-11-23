@@ -158,3 +158,71 @@ export interface GeneratedProjectPaths {
   checklist: string;
   cost: string;
 }
+
+export interface MediaConfig {
+  schemaVersion: "0.2.0";
+  speech: {mode: "none"};
+  render: {concurrency: number; crf: number; scale: number};
+}
+
+export interface MediaSegmentTiming {
+  segmentId: string;
+  from: number;
+  durationInFrames: number;
+}
+
+export interface MediaSceneTiming {
+  sceneId: string;
+  compositionId: string;
+  type: SceneType;
+  from: number;
+  durationInFrames: number;
+  segments: MediaSegmentTiming[];
+}
+
+export interface MediaPlan {
+  schemaVersion: "0.2.0";
+  projectId: string;
+  fps: 30;
+  width: 1280;
+  height: 720;
+  fullCompositionId: "IdeaTreeFull";
+  fullDurationInFrames: number;
+  scenes: MediaSceneTiming[];
+  sourceScriptSha256: string;
+}
+
+export interface MaterializeResult {
+  project: string;
+  plan: MediaPlan;
+  config: MediaConfig;
+  reviewStatus: ReviewStatus;
+  componentFiles: string[];
+  overwrittenComponents: boolean;
+  subtitles: {vtt: string; srt: string};
+  speech: string;
+}
+
+export interface RenderReport {
+  schemaVersion: "0.2.0";
+  kind: "still" | "video";
+  compositionId: string;
+  sceneId: string | null;
+  output: string;
+  startedAt: string;
+  finishedAt: string;
+  durationMs: number;
+  frame: number | null;
+  durationInFrames: number;
+  renderedFrameRange: [number, number] | null;
+  renderedFrameCount: number;
+  fps: number;
+  width: number;
+  height: number;
+  scale: number;
+  reviewStatus: ReviewStatus;
+  speechMode: "none";
+  externalCalls: {count: 0; apiFees: 0};
+  inputSha256: string;
+  localDraft: true;
+}
