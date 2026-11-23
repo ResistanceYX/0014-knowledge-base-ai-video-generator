@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/0014-knowledge-base-ai-video-generator/cost-schema-0.1.0.json",
-  "title": "M1 离线脚本成本记录",
+  "title": "离线脚本成本记录与可选 M3 媒体成本",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "sourceSnapshotSha256", "mode", "externalCalls", "optionalServicesPricing", "localCompute", "retries", "manualRevisionRounds"],
@@ -50,6 +50,36 @@
       }
     },
     "retries": {"type": "integer", "minimum": 0},
-    "manualRevisionRounds": {"type": "integer", "minimum": 0}
+    "manualRevisionRounds": {"type": "integer", "minimum": 0},
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "speechMode", "speechExternalCalls", "speechRetries", "speechApiFees", "renderCount", "localRebuildCount", "renderDurationMs", "speechDurationMs", "generatedClipCount", "manualAudioReplacements", "manualSubtitleOverrides", "note"],
+      "properties": {
+        "schemaVersion": {"const": "0.3.0"},
+        "speechMode": {"enum": ["none", "fixture", "edge-tts"]},
+        "speechExternalCalls": {"type": "integer", "minimum": 0},
+        "speechRetries": {"type": "integer", "minimum": 0},
+        "speechApiFees": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "amount", "currency", "note"],
+          "properties": {
+            "status": {"enum": ["unknown", "not-run"]},
+            "amount": {"type": "null"},
+            "currency": {"type": "null"},
+            "note": {"type": "string", "minLength": 1}
+          }
+        },
+        "renderCount": {"type": "integer", "minimum": 0},
+        "localRebuildCount": {"type": "integer", "minimum": 0},
+        "renderDurationMs": {"type": "number", "minimum": 0},
+        "speechDurationMs": {"type": "number", "minimum": 0},
+        "generatedClipCount": {"type": "integer", "minimum": 0},
+        "manualAudioReplacements": {"type": "integer", "minimum": 0},
+        "manualSubtitleOverrides": {"type": "integer", "minimum": 0},
+        "note": {"type": "string", "minLength": 1}
+      }
+    }
   }
 }
