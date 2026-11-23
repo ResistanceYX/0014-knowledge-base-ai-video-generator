@@ -1,4 +1,4 @@
-# 错误码（M2 0.2.0）
+# 错误码（M3 0.3.0）
 
 CLI 以非零退出状态表示失败，并输出首要错误码；节点校验可附带多个字段级问题。
 
@@ -30,9 +30,11 @@ CLI 以非零退出状态表示失败，并输出首要错误码；节点校验�
 | 限定条件 | `E_LIMIT_DROPPED` | 结论边界、备注、证据／推理边界等被删除 |
 | 审校闸门 | `E_REVIEW_REQUIRED` | approved 缺逐句一致性，或外部阶段前审校不完整 |
 | 付费闸门 | `E_PAID_GATE` | 预留给显式付费边界；M2 没有付费执行入口 |
-| 派生视图 | `E_DERIVED_STALE` | Markdown 阅读视图与 JSON 主文件不一致 |
-| 媒体配置 | `E_MEDIA_CONFIG` | 媒体配置字段、版本、并发、CRF、缩放或时间轴无效 |
-| 配音模式 | `E_SPEECH_MODE` | 请求了 M2 尚未实现的配音模式；当前只允许 none |
+| 派生视图 | `E_DERIVED_STALE` | Markdown 阅读视图、脚本修订或术语表与当前派生文件／配音清单不一致 |
+| 媒体配置 | `E_MEDIA_CONFIG` | 媒体配置字段、版本、并发、CRF、缩放、字幕覆盖或时间轴无效 |
+| 配音模式 | `E_SPEECH_MODE` | 请求未开放服务，或显式 Edge 合成、重试、输出编码检查失败 |
+| 音频 | `E_AUDIO` | 配音清单缺失、片段不一致、路径不安全或人工音频处理失败 |
+| 音频探测 | `E_AUDIO_PROBE` | `ffprobe` 不可用、输出无效、编码不可识别或时长越界 |
 | 组合选择 | `E_COMPOSITION` | 指定 sceneId／compositionId 不在当前媒体计划中 |
 | 浏览器 | `E_BROWSER` | Remotion 无头浏览器缺失或版本不匹配 |
 | 渲染 | `E_RENDER` | 帧号／帧区间、输出路径、打包或 Remotion 实际渲染失败 |
