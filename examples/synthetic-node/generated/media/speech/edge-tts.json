@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "0.3.0",
+  "mode": "edge-tts",
+  "status": "ready",
+  "sourceScriptSha256": "7bd2d525694c2a72ddb2fce4c71552a64bba9003aa6b1674723702d84494a7dc",
+  "terminologySha256": "59f5f9d39d749612db13c2605f44a5923d339eece465669d4b32308998e5650e",
+  "provider": {
+    "name": "edge-tts",
+    "version": "7.3.1",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+10%"
+  },
+  "externalCalls": {
+    "count": 8,
+    "retries": 0,
+    "apiFees": {
+      "status": "unknown",
+      "amount": null,
+      "currency": null,
+      "note": "未查询正式价格、服务条款或账单；无 API Key 不等于已确认免费，费用保持 unknown。"
+    }
+  },
+  "segmentPauseMs": 120,
+  "scenePauseMs": 350,
+  "clips": [
+    {
+      "sceneId": "scene-title",
+      "segmentId": "seg-title",
+      "file": "audio/clips/scene-title/seg-title.mp3",
+      "publicFile": "audio/clips/scene-title/seg-title.mp3",
+      "durationMs": 9024,
+      "sha256": "5e3276cfd3a4687ca3ed1230b63dc2f7aa336e88e3113993d79e242da2f72abc",
+      "generatedSha256": "5e3276cfd3a4687ca3ed1230b63dc2f7aa336e88e3113993d79e242da2f72abc",
+      "manuallyReplaced": false,
+      "spokenText": "第 9999 号合成节点处于预审状态，虽然字段标为已复活，也不代表独立验收或真实项目复活。"
+    },
+    {
+      "sceneId": "scene-idea",
+      "segmentId": "seg-idea",
+      "file": "audio/clips/scene-idea/seg-idea.mp3",
+      "publicFile": "audio/clips/scene-idea/seg-idea.mp3",
+      "durationMs": 8328,
+      "sha256": "4dbb5e41969ce3e4a924e7f081789ce6dc208499473148de76f234460c04b41b",
+      "generatedSha256": "4dbb5e41969ce3e4a924e7f081789ce6dc208499473148de76f234460c04b41b",
+      "manuallyReplaced": false,
+      "spokenText": "它只验证节点解析、保守脚本和逐句来源映射，不对应真实创业点子，也不证明任何经营成果。"
+    },
+    {
+      "sceneId": "scene-death-01",
+      "segmentId": "seg-death-01-label",
+      "file": "audio/clips/scene-death-01/seg-death-01-label.mp3",
+      "publicFile": "audio/clips/scene-death-01/seg-death-01-label.mp3",
+      "durationMs": 9864,
+      "sha256": "52a3b9f913f535888211ffd41197694846c0b5790aeef666ef78f220cae9586b",
+      "generatedSha256": "52a3b9f913f535888211ffd41197694846c0b5790aeef666ef78f220cae9586b",
+      "manuallyReplaced": false,
+      "spokenText": "第一条死法叫伪需求，置信度低。合成证据 哎 与推理 哎 只用于测试字段定位，不能当作真实事实。"
+    },
+    {
+      "sceneId": "scene-death-02",
+      "segmentId": "seg-death-02-label",
+      "file": "audio/clips/scene-death-02/seg-death-02-label.mp3",
+      "publicFile": "audio/clips/scene-death-02/seg-death-02-label.mp3",
+      "durationMs": 10464,
+      "sha256": "b68db85c2b94535724ac4eeff26baf24a695f942504bc852d20e98ba0096f8f4",
+      "generatedSha256": "b68db85c2b94535724ac4eeff26baf24a695f942504bc852d20e98ba0096f8f4",
+      "manuallyReplaced": false,
+      "spokenText": "第二条死法叫信任成本，置信度低。证据 比 与推理 比 同样是合成记录，只测试来源能否回到节点字段。"
+    },
+    {
+      "sceneId": "scene-death-03",
+      "segmentId": "seg-death-03-label",
+      "file": "audio/clips/scene-death-03/seg-death-03-label.mp3",
+      "publicFile": "audio/clips/scene-death-03/seg-death-03-label.mp3",
+      "durationMs": 10008,
+      "sha256": "8e8c54ae69cd2ef3d5b0d05c39114c0fe1362fa18b964ae3e6d0dc3dfb1141c4",
+      "generatedSha256": "8e8c54ae69cd2ef3d5b0d05c39114c0fe1362fa18b964ae3e6d0dc3dfb1141c4",
+      "manuallyReplaced": false,
+      "spokenText": "第三条死法叫执行人限制，置信度低。证据 西 与推理 西 仅验证待补证边界，不是现实案例结论。"
+    },
+    {
+      "sceneId": "scene-evidence-limits",
+      "segmentId": "seg-demand-type",
+      "file": "audio/clips/scene-evidence-limits/seg-demand-type.mp3",
+      "publicFile": "audio/clips/scene-evidence-limits/seg-demand-type.mp3",
+      "durationMs": 12552,
+      "sha256": "ee14bbdcaa2aaaf8206bb874c86aeb46bda7aa8ad2f818a7c9489281703364d7",
+      "generatedSha256": "ee14bbdcaa2aaaf8206bb874c86aeb46bda7aa8ad2f818a7c9489281703364d7",
+      "manuallyReplaced": false,
+      "spokenText": "节点没有真实需求证据，商业价值也未验证。它只证明合成数据能进入测试管线，不证明真实项目复活、实现或发布；外部证据未被访问。"
+    },
+    {
+      "sceneId": "scene-reusable-parts",
+      "segmentId": "seg-reusable-parts",
+      "file": "audio/clips/scene-reusable-parts/seg-reusable-parts.mp3",
+      "publicFile": "audio/clips/scene-reusable-parts/seg-reusable-parts.mp3",
+      "durationMs": 10056,
+      "sha256": "e4ae29bd8adf3f3d4fb625472312a5ceb7f8531d410132f4156d623f80af2ef3",
+      "generatedSha256": "e4ae29bd8adf3f3d4fb625472312a5ceb7f8531d410132f4156d623f80af2ef3",
+      "manuallyReplaced": false,
+      "spokenText": "可拆零件包括节点解析、离线脚本、来源映射和人工复校测试项；这些字段不证明收入、采用或商业闭环。"
+    },
+    {
+      "sceneId": "scene-outro",
+      "segmentId": "seg-outro",
+      "file": "audio/clips/scene-outro/seg-outro.mp3",
+      "publicFile": "audio/clips/scene-outro/seg-outro.mp3",
+      "durationMs": 11904,
+      "sha256": "f12f9cae7222056e280eb31ce46814be6228931462457a6db40fb6fb35297c92",
+      "generatedSha256": "f12f9cae7222056e280eb31ce46814be6228931462457a6db40fb6fb35297c92",
+      "manuallyReplaced": false,
+      "spokenText": "这是未经人工审校的本地合成样片。发布前必须核对原节点、逐句来源、术语读音、许可和 人工智能 标识；工具不会自动发布。"
+    }
+  ],
+  "note": "Edge TTS 真实合成仅由显式 speech 命令触发；字幕按音频片段对齐，不做词级或唇形同步。"
+}
