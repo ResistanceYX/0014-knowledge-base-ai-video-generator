@@ -2,10 +2,11 @@
 
 本目录是实际 Remotion 打包入口，不是仅供查看的源码副本。
 
-- `index.tsx`、`Root.tsx`、`Video.tsx`：注册完整组合与每个单场景组合。
-- `components/`：六类场景模板及共用版式，可直接编辑；修改会进入后续预览或 MP4。
+- `index.tsx`、`Root.tsx`、`Video.tsx`：注册完整组合与每个单场景组合，并按媒体计划在对应片段帧区间播放音频。
+- `components/`：六类场景模板及共用版式，可直接编辑；页眉包含 AI 标识，字幕使用人工覆盖后的文本与时间。
 - `data.ts`：由主 JSON 和时间轴自动派生，请勿手改；每次 `materialize`／`render` 会重建。
-- `config.json`：只开放 M2 已实现的 `speech.mode=none` 以及本地渲染并发、CRF、缩放。重复物化不会覆盖它。
+- `public/audio/`：由原始 `audio/clips` 复制而来的打包输入，请勿把它当作人工音频主文件。
+- `config.json`：开放 `none`、`fixture`、`edge-tts` 与受限渲染参数。重复物化不会覆盖它；真实配音只能由根目录显式 `speech` 命令准备。
 
 在工具仓库根目录执行：
 
@@ -19,4 +20,4 @@ npm run render -- --project /path/to/generated-project
 
 重复 `materialize` 默认保留组件修改；只有显式 `--force-components` 才用内置模板覆盖。修改 `script/scenes.json` 或 `source-map.json` 后，应先校验，再按需要使用 `--refresh-derived`。
 
-M2 字幕按字符数分配时间，只是草稿。无真实配音、音画同步、外部素材或自动发布；完整来源摘录、限定条件和审校状态仍以 `script/` 主文件为准。
+`none` 字幕仍按字符数估算；音频模式按真实音频片段对齐并应用人工字幕覆盖，但不承诺词级对齐或唇形同步。完整来源摘录、限定条件和审校状态始终以 `script/` 主文件为准，工具不自动发布。
