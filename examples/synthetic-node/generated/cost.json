@@ -18,7 +18,7 @@
   },
   "localCompute": {
     "status": "measured",
-    "durationMs": 200,
+    "durationMs": 180,
     "monetaryCost": "not-estimated",
     "note": "本地解析与生成仍消耗机器时间和电力；本阶段只记录耗时，不折算货币成本。"
   },
