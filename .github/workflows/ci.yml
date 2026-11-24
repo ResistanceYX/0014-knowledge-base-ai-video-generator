@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: 24.22.3
           cache: npm
+      - name: Install FFmpeg and ffprobe
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          ffmpeg -version
+          ffprobe -version
       - run: npm ci
       - run: npm run check
       - name: Generate, validate and materialize synthetic project outside repository
