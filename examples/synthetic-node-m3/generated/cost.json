@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.1.0",
+  "sourceSnapshotSha256": "23687ce6224e91463121eca1172ef2ca82cbc693f7287dd697aa03ca0ca9e1f0",
+  "mode": "offline-template",
+  "externalCalls": {
+    "status": "none",
+    "count": 0,
+    "apiFees": {
+      "amount": 0,
+      "currency": null,
+      "note": "本次仅运行本地离线模板，未调用外部模型、配音或渲染 API；0 仅表示本次外部 API 调用费用。"
+    }
+  },
+  "optionalServicesPricing": {
+    "status": "unknown",
+    "queriedAt": null,
+    "note": "未查询任何可选外部服务的当前价格；unknown 不表示免费，也不构成报价。"
+  },
+  "localCompute": {
+    "status": "measured",
+    "durationMs": 232973,
+    "monetaryCost": "not-estimated",
+    "note": "累计本地脚本、配音处理与渲染耗时；机器时间、电力、存储与人工审校仍有成本，不折算为货币金额。"
+  },
+  "retries": 0,
+  "manualRevisionRounds": 0,
+  "media": {
+    "schemaVersion": "0.3.0",
+    "speechMode": "edge-tts",
+    "speechExternalCalls": 8,
+    "speechRetries": 0,
+    "speechApiFees": {
+      "status": "unknown",
+      "amount": null,
+      "currency": null,
+      "note": "Edge TTS 无 API Key 不等于已确认免费；未查询正式价格、服务条款或账单，费用记为 unknown，不写成 0。"
+    },
+    "renderCount": 2,
+    "localRebuildCount": 0,
+    "renderDurationMs": 189350,
+    "speechDurationMs": 41592,
+    "generatedClipCount": 8,
+    "manualAudioReplacements": 0,
+    "manualSubtitleOverrides": 0,
+    "note": "script 顶层 externalCalls 仅指 M1 离线脚本；media 分别累计配音调用、重试和渲染耗时。人工修改轮次沿用 manualRevisionRounds，不由工具虚构。"
+  }
+}
