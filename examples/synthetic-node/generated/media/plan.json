@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "0.2.0",
+  "projectId": "9999-synthetic-evidence-video-node",
+  "fps": 30,
+  "width": 1280,
+  "height": 720,
+  "fullCompositionId": "IdeaTreeFull",
+  "fullDurationInFrames": 7590,
+  "scenes": [
+    {
+      "sceneId": "scene-title",
+      "compositionId": "Scene-scene-title",
+      "type": "Title",
+      "from": 0,
+      "durationInFrames": 540,
+      "segments": [
+        {
+          "segmentId": "seg-title",
+          "from": 0,
+          "durationInFrames": 540
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-idea",
+      "compositionId": "Scene-scene-idea",
+      "type": "Idea",
+      "from": 540,
+      "durationInFrames": 480,
+      "segments": [
+        {
+          "segmentId": "seg-idea",
+          "from": 0,
+          "durationInFrames": 480
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-01",
+      "compositionId": "Scene-scene-death-01",
+      "type": "DeathReason",
+      "from": 1020,
+      "durationInFrames": 1140,
+      "segments": [
+        {
+          "segmentId": "seg-death-01-label",
+          "from": 0,
+          "durationInFrames": 211
+        },
+        {
+          "segmentId": "seg-death-01-evidence",
+          "from": 211,
+          "durationInFrames": 340
+        },
+        {
+          "segmentId": "seg-death-01-reasoning",
+          "from": 551,
+          "durationInFrames": 408
+        },
+        {
+          "segmentId": "seg-death-01-case",
+          "from": 959,
+          "durationInFrames": 181
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-02",
+      "compositionId": "Scene-scene-death-02",
+      "type": "DeathReason",
+      "from": 2160,
+      "durationInFrames": 1110,
+      "segments": [
+        {
+          "segmentId": "seg-death-02-label",
+          "from": 0,
+          "durationInFrames": 222
+        },
+        {
+          "segmentId": "seg-death-02-evidence",
+          "from": 222,
+          "durationInFrames": 322
+        },
+        {
+          "segmentId": "seg-death-02-reasoning",
+          "from": 544,
+          "durationInFrames": 382
+        },
+        {
+          "segmentId": "seg-death-02-case",
+          "from": 926,
+          "durationInFrames": 184
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-03",
+      "compositionId": "Scene-scene-death-03",
+      "type": "DeathReason",
+      "from": 3270,
+      "durationInFrames": 1140,
+      "segments": [
+        {
+          "segmentId": "seg-death-03-label",
+          "from": 0,
+          "durationInFrames": 230
+        },
+        {
+          "segmentId": "seg-death-03-evidence",
+          "from": 230,
+          "durationInFrames": 321
+        },
+        {
+          "segmentId": "seg-death-03-reasoning",
+          "from": 551,
+          "durationInFrames": 405
+        },
+        {
+          "segmentId": "seg-death-03-case",
+          "from": 956,
+          "durationInFrames": 184
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-evidence-limits",
+      "compositionId": "Scene-scene-evidence-limits",
+      "type": "EvidenceAndLimits",
+      "from": 4410,
+      "durationInFrames": 2340,
+      "segments": [
+        {
+          "segmentId": "seg-demand-type",
+          "from": 0,
+          "durationInFrames": 188
+        },
+        {
+          "segmentId": "seg-demand-note",
+          "from": 188,
+          "durationInFrames": 322
+        },
+        {
+          "segmentId": "seg-value-assessment",
+          "from": 510,
+          "durationInFrames": 420
+        },
+        {
+          "segmentId": "seg-conclusion-boundary",
+          "from": 930,
+          "durationInFrames": 428
+        },
+        {
+          "segmentId": "seg-node-note",
+          "from": 1358,
+          "durationInFrames": 705
+        },
+        {
+          "segmentId": "seg-evidence-scope",
+          "from": 2063,
+          "durationInFrames": 277
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-reusable-parts",
+      "compositionId": "Scene-scene-reusable-parts",
+      "type": "ReusableParts",
+      "from": 6750,
+      "durationInFrames": 420,
+      "segments": [
+        {
+          "segmentId": "seg-reusable-parts",
+          "from": 0,
+          "durationInFrames": 420
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-outro",
+      "compositionId": "Scene-scene-outro",
+      "type": "Outro",
+      "from": 7170,
+      "durationInFrames": 420,
+      "segments": [
+        {
+          "segmentId": "seg-outro",
+          "from": 0,
+          "durationInFrames": 420
+        }
+      ]
+    }
+  ],
+  "sourceScriptSha256": "bd474e414163c3558c90a6224255e2391b44173d388d8a05b8e7123b9a81f77e"
+}

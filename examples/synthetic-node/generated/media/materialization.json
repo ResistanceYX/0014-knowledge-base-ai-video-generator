@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.2.0",
+  "mediaVersion": "0.2.0-m2",
+  "sourceScriptSha256": "bd474e414163c3558c90a6224255e2391b44173d388d8a05b8e7123b9a81f77e",
+  "componentsPreserved": false,
+  "componentFiles": [
+    "video/README.md",
+    "video/Root.tsx",
+    "video/Video.tsx",
+    "video/components/BodyLines.tsx",
+    "video/components/DeathReason.tsx",
+    "video/components/EvidenceAndLimits.tsx",
+    "video/components/Idea.tsx",
+    "video/components/Outro.tsx",
+    "video/components/ReusableParts.tsx",
+    "video/components/SceneFrame.tsx",
+    "video/components/Title.tsx",
+    "video/index.tsx",
+    "video/types.ts"
+  ],
+  "templateSha256": "0170c531cfe9d89519d9251e2707a31dfc3a8b47edd665fe93f9edacb7a80bd1"
+}
