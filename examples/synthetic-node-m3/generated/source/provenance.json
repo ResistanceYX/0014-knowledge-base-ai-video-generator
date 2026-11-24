@@ -1,0 +1,15 @@
+{
+  "sourceType": "synthetic-fixture",
+  "originalUrl": null,
+  "normalizedUrl": null,
+  "commit": null,
+  "retrievedAt": "2026-11-23T00:00:00.000Z",
+  "fileSha256": "23687ce6224e91463121eca1172ef2ca82cbc693f7287dd697aa03ca0ca9e1f0",
+  "nodeFormatVersion": "idea-tree-node-format-v1.9",
+  "parserVersion": "0.1.0-m1",
+  "license": {
+    "spdxId": "NOASSERTION",
+    "referenceUrl": null,
+    "notice": "合成 fixture 仅用于离线测试；NOASSERTION 表示本工具不为测试数据声明许可。"
+  }
+}
