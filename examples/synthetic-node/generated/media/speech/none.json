@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.2.0",
+  "mode": "none",
+  "status": "disabled",
+  "clips": [],
+  "externalCalls": {
+    "count": 0,
+    "apiFees": 0
+  },
+  "note": "M2 不生成配音；8 个场景可无声预览。字幕仅按字符数分配时间，不代表音画同步。"
+}
