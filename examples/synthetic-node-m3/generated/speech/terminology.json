@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.3.0",
+  "entries": [
+    {
+      "term": "AI",
+      "replacement": "人工智能"
+    },
+    {
+      "term": "A",
+      "replacement": "哎"
+    },
+    {
+      "term": "B",
+      "replacement": "比"
+    },
+    {
+      "term": "C",
+      "replacement": "西"
+    }
+  ]
+}
