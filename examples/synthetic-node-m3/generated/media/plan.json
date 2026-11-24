@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "0.3.0",
+  "projectId": "9999-synthetic-evidence-video-node",
+  "fps": 30,
+  "width": 1280,
+  "height": 720,
+  "fullCompositionId": "IdeaTreeFull",
+  "fullDurationInFrames": 2557,
+  "scenes": [
+    {
+      "sceneId": "scene-title",
+      "compositionId": "Scene-scene-title",
+      "type": "Title",
+      "from": 0,
+      "durationInFrames": 282,
+      "segments": [
+        {
+          "segmentId": "seg-title",
+          "from": 0,
+          "durationInFrames": 271,
+          "audioFile": "audio/clips/scene-title/seg-title.mp3",
+          "audioDurationMs": 9024,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-idea",
+      "compositionId": "Scene-scene-idea",
+      "type": "Idea",
+      "from": 282,
+      "durationInFrames": 261,
+      "segments": [
+        {
+          "segmentId": "seg-idea",
+          "from": 0,
+          "durationInFrames": 250,
+          "audioFile": "audio/clips/scene-idea/seg-idea.mp3",
+          "audioDurationMs": 8328,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-01",
+      "compositionId": "Scene-scene-death-01",
+      "type": "DeathReason",
+      "from": 543,
+      "durationInFrames": 307,
+      "segments": [
+        {
+          "segmentId": "seg-death-01-label",
+          "from": 0,
+          "durationInFrames": 296,
+          "audioFile": "audio/clips/scene-death-01/seg-death-01-label.mp3",
+          "audioDurationMs": 9864,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-02",
+      "compositionId": "Scene-scene-death-02",
+      "type": "DeathReason",
+      "from": 850,
+      "durationInFrames": 325,
+      "segments": [
+        {
+          "segmentId": "seg-death-02-label",
+          "from": 0,
+          "durationInFrames": 314,
+          "audioFile": "audio/clips/scene-death-02/seg-death-02-label.mp3",
+          "audioDurationMs": 10464,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-death-03",
+      "compositionId": "Scene-scene-death-03",
+      "type": "DeathReason",
+      "from": 1175,
+      "durationInFrames": 312,
+      "segments": [
+        {
+          "segmentId": "seg-death-03-label",
+          "from": 0,
+          "durationInFrames": 301,
+          "audioFile": "audio/clips/scene-death-03/seg-death-03-label.mp3",
+          "audioDurationMs": 10008,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-evidence-limits",
+      "compositionId": "Scene-scene-evidence-limits",
+      "type": "EvidenceAndLimits",
+      "from": 1487,
+      "durationInFrames": 388,
+      "segments": [
+        {
+          "segmentId": "seg-demand-type",
+          "from": 0,
+          "durationInFrames": 377,
+          "audioFile": "audio/clips/scene-evidence-limits/seg-demand-type.mp3",
+          "audioDurationMs": 12552,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-reusable-parts",
+      "compositionId": "Scene-scene-reusable-parts",
+      "type": "ReusableParts",
+      "from": 1875,
+      "durationInFrames": 313,
+      "segments": [
+        {
+          "segmentId": "seg-reusable-parts",
+          "from": 0,
+          "durationInFrames": 302,
+          "audioFile": "audio/clips/scene-reusable-parts/seg-reusable-parts.mp3",
+          "audioDurationMs": 10056,
+          "manuallyReplaced": false
+        }
+      ]
+    },
+    {
+      "sceneId": "scene-outro",
+      "compositionId": "Scene-scene-outro",
+      "type": "Outro",
+      "from": 2188,
+      "durationInFrames": 369,
+      "segments": [
+        {
+          "segmentId": "seg-outro",
+          "from": 0,
+          "durationInFrames": 358,
+          "audioFile": "audio/clips/scene-outro/seg-outro.mp3",
+          "audioDurationMs": 11904,
+          "manuallyReplaced": false
+        }
+      ]
+    }
+  ],
+  "sourceScriptSha256": "7bd2d525694c2a72ddb2fce4c71552a64bba9003aa6b1674723702d84494a7dc",
+  "speech": {
+    "mode": "edge-tts",
+    "alignment": "audio-segment",
+    "clipCount": 8,
+    "manuallyReplacedClips": 0,
+    "subtitleOverrides": 0
+  }
+}

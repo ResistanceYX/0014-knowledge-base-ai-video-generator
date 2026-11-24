@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.3.0",
+  "container": "mp4",
+  "values": {
+    "title": "#9999 合成证据化视频节点测试档案（AI 本地候选草稿）",
+    "artist": "idea-tree #0014 evidence-video tool; human review required",
+    "comment": "AI-generated local draft. Review=unreviewed. Speech=edge-tts. No automatic publication.",
+    "description": "Source node=synthetic-fixture; snapshot=23687ce6224e91463121eca1172ef2ca82cbc693f7287dd697aa03ca0ca9e1f0; evidence and limits remain subject to human review.",
+    "copyright": "Node license=NOASSERTION; voice and service rights are separately recorded; NOASSERTION where applicable.",
+    "genre": "Knowledge-base evidence explainer draft",
+    "ai_generated": "true",
+    "automatic_publication": "false"
+  }
+}
