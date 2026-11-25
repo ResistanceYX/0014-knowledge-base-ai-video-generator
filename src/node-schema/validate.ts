@@ -42,7 +42,11 @@ function push(issues: ValidationIssue[], location: string, message: string, code
   issues.push(issue(code, location, message));
 }
 
-export function parseAndValidateNode(yamlText: string): IdeaTreeNode {
+export interface NodeValidationOptions {
+  allowUpstreamValidatedRelations?: boolean;
+}
+
+export function parseAndValidateNode(yamlText: string, options: NodeValidationOptions = {}): IdeaTreeNode {
   let data: unknown;
   try {
     const document = parseDocument(yamlText, {schema: "core", strict: true, uniqueKeys: true});
@@ -100,8 +104,12 @@ export function parseAndValidateNode(yamlText: string): IdeaTreeNode {
     }
   }
   const relations = data.相关节点;
-  if (relations !== undefined && relations !== null && (!Array.isArray(relations) || relations.length > 0)) {
-    push(issues, "/相关节点", "M1 单节点模式不验证跨节点双向关系；非空相关节点需先在完整 idea-tree 仓库校验", "E_NODE_SCOPE");
+  if (relations !== undefined && relations !== null) {
+    if (!Array.isArray(relations)) {
+      push(issues, "/相关节点", "相关节点必须是数组");
+    } else if (relations.length > 0 && !options.allowUpstreamValidatedRelations) {
+      push(issues, "/相关节点", "M1 单节点模式不验证跨节点双向关系；非空相关节点需绑定同一 commit 的完整 idea-tree 上游校验证据", "E_NODE_SCOPE");
+    }
   }
 
   const review = parseDate(data.审核日期);
