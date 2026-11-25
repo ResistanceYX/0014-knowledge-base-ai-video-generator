@@ -51,4 +51,19 @@ describe("idea-tree v1.9 单节点校验", () => {
     related.相关节点 = [{节点: "0001-other", 关系: "同类"}];
     await expectCode(() => parseAndValidateNode(stringify(related)), "E_NODE_SCOPE");
   });
+
+  it("只有显式上游证据入口才保留非空关系，其他校验仍执行", async () => {
+    const data = parse(await readFile(FIXTURE, "utf8")) as Record<string, unknown>;
+    data.相关节点 = [{节点: "0001-other", 关系: "同类"}];
+    const {stringify} = await import("yaml");
+    const text = stringify(data);
+    await expectCode(() => parseAndValidateNode(text), "E_NODE_SCOPE");
+    const node = parseAndValidateNode(text, {allowUpstreamValidatedRelations: true});
+    expect(node.相关节点).toHaveLength(1);
+    data.死因保质期 = "not-a-date";
+    await expectCode(
+      () => parseAndValidateNode(stringify(data), {allowUpstreamValidatedRelations: true}),
+      "E_NODE_SCHEMA",
+    );
+  });
 });
