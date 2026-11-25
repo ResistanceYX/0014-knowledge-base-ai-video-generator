@@ -102,6 +102,9 @@
           "type": "string",
           "minLength": 1
         },
+        "upstreamValidation": {
+          "$ref": "#/$defs/upstreamValidation"
+        },
         "license": {
           "type": "object",
           "additionalProperties": false,
@@ -128,6 +131,45 @@
             }
           }
         }
+      }
+    },
+    "upstreamValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "repository",
+        "commit",
+        "validatedAt",
+        "status",
+        "commands",
+        "log",
+        "logSha256",
+        "note"
+      ],
+      "properties": {
+        "schemaVersion": {"const": "0.1.0"},
+        "repository": {"const": "ResistanceYX/idea-tree"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "validatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "status": {"const": "passed"},
+        "commands": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {"const": "python3 scripts/validate.py --root ."},
+            {"const": "python3 scripts/generate_index.py --root . --check"}
+          ],
+          "items": false
+        },
+        "log": {"type": "string", "minLength": 1},
+        "logSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "note": {"type": "string", "minLength": 1}
       }
     },
     "nodeSummary": {
