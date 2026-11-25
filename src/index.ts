@@ -7,6 +7,7 @@ export * from "./node-schema/validate.js";
 export * from "./script/template.js";
 export * from "./script/narration.js";
 export * from "./provenance/pointer.js";
+export * from "./provenance/upstream-validation.js";
 export * from "./provenance/validate.js";
 export * from "./cost/record.js";
 export * from "./cost/media.js";

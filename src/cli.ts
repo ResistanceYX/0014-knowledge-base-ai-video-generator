@@ -6,11 +6,12 @@ import {materializeProject} from "./media/materialize.js";
 import {renderArtifact} from "./media/render.js";
 import {synthesizeSpeech} from "./media/synthesize.js";
 import {checkPublishReadiness} from "./media/publish.js";
+import {readUpstreamValidationFile} from "./provenance/upstream-validation.js";
 
 const HELP = `0014-knowledge-base-ai-video-generator（M3，脚本＋程序化画面＋可选真实配音）
 
 用法：
-  npm run generate -- --input <本地YAML或idea-tree节点URL> --output <目录> [--synthetic] [--force]
+  npm run generate -- --input <本地YAML或idea-tree节点URL> --output <目录> [--synthetic] [--force] [--upstream-validation <证据JSON>]
   npm run validate-script -- --project <已生成目录> [--refresh-derived]
   npm run materialize -- --project <目录> [--refresh-derived] [--force-components]
   npm run speech -- --project <目录> [--scene <sceneId>] [--force] [--refresh-derived] [--allow-synthetic-unreviewed]
@@ -67,6 +68,7 @@ async function main(): Promise<void> {
       "force-components": {type: "boolean", default: false},
       "refresh-derived": {type: "boolean", default: false},
       "allow-synthetic-unreviewed": {type: "boolean", default: false},
+      "upstream-validation": {type: "string"},
       help: {type: "boolean", short: "h", default: false},
     },
   });
@@ -82,6 +84,9 @@ async function main(): Promise<void> {
       output: args.values.output,
       synthetic: args.values.synthetic,
       force: args.values.force,
+      ...(args.values["upstream-validation"]
+        ? {upstreamValidation: await readUpstreamValidationFile(args.values["upstream-validation"])}
+        : {}),
     });
     console.log(`生成完成（仅本地，未上传）：${result.paths.root}`);
     console.log(`场景 ${result.scenes.scenes.length} 个，逐句来源 ${result.sourceMap.entries.length} 条，整稿状态 ${result.scenes.scriptReview.status}。`);

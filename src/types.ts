@@ -46,6 +46,18 @@ export interface LicenseRecord {
   notice: string;
 }
 
+export interface UpstreamValidationRecord {
+  schemaVersion: "0.1.0";
+  repository: "ResistanceYX/idea-tree";
+  commit: string;
+  validatedAt: string;
+  status: "passed";
+  commands: string[];
+  log: string;
+  logSha256: string;
+  note: string;
+}
+
 export interface SourceSnapshot {
   sourceType: "github-public-node" | "local-yaml" | "synthetic-fixture";
   originalUrl: string | null;
@@ -56,6 +68,7 @@ export interface SourceSnapshot {
   nodeFormatVersion: string;
   parserVersion: string;
   license: LicenseRecord;
+  upstreamValidation?: UpstreamValidationRecord;
 }
 
 export interface Review {

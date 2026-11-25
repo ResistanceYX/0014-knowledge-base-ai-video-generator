@@ -10,6 +10,7 @@ import {TemplateScriptWriter} from "./script/template.js";
 import {renderNarration, renderReviewChecklist, renderSourceTable} from "./script/narration.js";
 import {validateScriptBundle} from "./provenance/validate.js";
 import {sha256} from "./provenance/pointer.js";
+import {validateUpstreamValidationRecord} from "./provenance/upstream-validation.js";
 import {validateJsonSchema} from "./scenes/schema.js";
 import {createCostRecord} from "./cost/record.js";
 import type {CostRecord, GeneratedProjectPaths, SceneDocument, ScriptBundle, SourceMapDocument, SourceSnapshot} from "./types.js";
@@ -21,6 +22,7 @@ export interface GenerateOptions {
   force?: boolean;
   now?: Date;
   fetchImpl?: typeof fetch;
+  upstreamValidation?: unknown;
 }
 
 export interface GenerateResult extends ScriptBundle {
@@ -76,7 +78,11 @@ function json(value: unknown): string {
 export async function generateProject(options: GenerateOptions): Promise<GenerateResult> {
   const started = performance.now();
   const {snapshot, yamlText, bytes} = await loadNodeSnapshot(options);
-  const node = parseAndValidateNode(yamlText);
+  const upstreamValidation = options.upstreamValidation === undefined
+    ? undefined
+    : validateUpstreamValidationRecord(options.upstreamValidation, snapshot.commit);
+  if (upstreamValidation) snapshot.upstreamValidation = upstreamValidation;
+  const node = parseAndValidateNode(yamlText, {allowUpstreamValidatedRelations: upstreamValidation !== undefined});
   const writer = new TemplateScriptWriter();
   const bundle = await writer.write(node, snapshot);
   validateScriptBundle(node, snapshot, bundle);
@@ -119,11 +125,14 @@ export async function validateProject(options: ValidateProjectOptions): Promise<
   const yamlBytes = await readLocalFileLimited(paths.sourceYaml);
   const yamlText = yamlBytes.toString("utf8");
   const actualHash = sha256(yamlBytes);
-  const node = parseAndValidateNode(yamlText);
   const provenance = await readJson(paths.provenance) as SourceSnapshot;
   if (provenance.fileSha256 !== actualHash) {
     throw new AppError("E_SOURCE_SNAPSHOT", "source/node.yaml 已变化，provenance.json 中的哈希已失效", paths.sourceYaml);
   }
+  const upstreamValidation = provenance.upstreamValidation === undefined
+    ? undefined
+    : validateUpstreamValidationRecord(provenance.upstreamValidation, typeof provenance.commit === "string" ? provenance.commit : null);
+  const node = parseAndValidateNode(yamlText, {allowUpstreamValidatedRelations: upstreamValidation !== undefined});
   const scenes = await readJson(paths.scenes) as SceneDocument;
   const sourceMap = await readJson(paths.sourceMap) as SourceMapDocument;
   const validated = validateScriptBundle(node, provenance, {scenes, sourceMap});
