@@ -11,7 +11,7 @@ export function renderNarration(scenes: SceneDocument): string {
     `> 项目：${scenes.projectId}`,
     `> 快照 SHA-256：${scenes.sourceSnapshot.fileSha256}`,
     `> 审核状态：${scenes.scriptReview.status}。本文件是派生阅读视图；人工修改请编辑 scenes.json 与 source-map.json。`,
-    "> 本阶段不调用配音、外部模型或完整渲染。",
+    "> 本地生成器不调用配音、外部模型或完整渲染；AI 辅助改写与人工操作另见审校记录。",
     "",
   ];
   for (const scene of scenes.scenes) {
