@@ -59,6 +59,8 @@ npm run generate -- \
 npm run materialize -- --project /path/to/generated-project
 ```
 
+含非空 `相关节点` 的真实节点默认仍以 `E_NODE_SCOPE` 停止。只有已经在**同一完整 commit** 的母仓库运行 G01／G02 校验，并保存包含命令、完整日志及日志 SHA-256 的证据 JSON 时，才可显式增加 `--upstream-validation /path/to/upstream-validation.json`。生成和 `validate-script` 都会复核 repository、commit、命令、成功标记与日志哈希；证据不是上游签名，不证明外部事实为真，也不替代逐句人工审校。
+
 `--output` 非空时必须显式添加 `--force`。合成 fixture 使用 `--synthetic`，许可记录为 `NOASSERTION`。默认配置仍是 `none`，不会因物化、预览或渲染而联网配音。
 
 ## 配置真实配音
