@@ -102,7 +102,7 @@ npm run speech -- \
 
 ## 人工修改与局部重建
 
-`scenes.json` 和 `source-map.json` 是脚本主文件；`narration.md`、`source-map.md` 和 `video/data.ts` 是派生文件。
+`scenes.json` 和 `source-map.json` 是脚本主文件；`narration.md`、`source-map.md` 和 `video/data.ts` 是派生文件。`placeholder`＋`needs-evidence` 只保留审校提示，不进入配音、字幕或媒体分段，缺失内容不会由工具补编。只有 placeholder 的场景会整个从媒体计划省略；画面组件也只读取可播放片段的来源记录。旧配音清单仍含 placeholder 片段，或字幕覆盖指向 placeholder 时，会安全停止。
 
 1. 修改旁白或视觉内容并同步检查来源表。新增实质事实必须有节点字段来源；无法定位时使用 `placeholder`＋`needs-evidence`。
 2. 先校验，确认修改后再显式刷新派生视图：
