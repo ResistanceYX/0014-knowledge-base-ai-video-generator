@@ -1,6 +1,7 @@
 import React from "react";
 import {AbsoluteFill, Audio, Sequence, Series, staticFile} from "remotion";
 import {mediaPlan, sceneDocument, sourceMapDocument} from "./data";
+import {mediaSourceEntries} from "./media";
 import type {SceneProps, SceneType} from "./types";
 import {Title} from "./components/Title";
 import {Idea} from "./components/Idea";
@@ -37,7 +38,7 @@ const SceneContent: React.FC<{sceneId: string}> = ({sceneId}) => {
   const timing = mediaPlan.scenes.find((item) => item.sceneId === sceneId);
   if (!scene || !timing) return <AbsoluteFill style={{background: "#07111f", color: "white", padding: 80}}>未知场景：{sceneId}</AbsoluteFill>;
   const Template = templates[scene.type];
-  const entries = sourceMapDocument.entries.filter((entry) => entry.sceneId === sceneId);
+  const entries = mediaSourceEntries(sourceMapDocument.entries, sceneId, timing);
   return (
     <>
       <Template scene={scene} entries={entries} timing={timing} />
