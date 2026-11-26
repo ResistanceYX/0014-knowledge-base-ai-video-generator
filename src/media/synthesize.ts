@@ -11,7 +11,7 @@ import {loadMediaConfig} from "./config.js";
 import {loadTerminology} from "./overrides.js";
 import {probeAudio, runProcess, safeProjectPath, writeToneWav} from "./audio.js";
 import {readSpeechManifest, writeSpeechManifest, type AudioSpeechConfig} from "./speech.js";
-import {scriptRevision} from "./timeline.js";
+import {mediaSegments, scriptRevision} from "./timeline.js";
 import {materializeProject} from "./materialize.js";
 
 export interface SynthesizeSpeechOptions {
@@ -36,7 +36,7 @@ function validId(value: string): boolean {
 }
 
 function segments(document: SceneDocument): Array<{sceneId: string; segmentId: string; text: string}> {
-  return document.scenes.flatMap((scene) => scene.narrationSegments.map((segment) => ({sceneId: scene.sceneId, segmentId: segment.segmentId, text: segment.text})));
+  return document.scenes.flatMap((scene) => mediaSegments(scene).map((segment) => ({sceneId: scene.sceneId, segmentId: segment.segmentId, text: segment.text})));
 }
 
 async function fileHash(filename: string): Promise<string | null> {

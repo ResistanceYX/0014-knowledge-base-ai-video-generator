@@ -7,8 +7,12 @@ export function sceneCompositionId(sceneId: string): string {
   return `Scene-${sceneId.replace(/[^A-Za-z0-9_-]/g, "-")}`;
 }
 
+export function mediaSegments(scene: SceneDocument["scenes"][number]): SceneDocument["scenes"][number]["narrationSegments"] {
+  return scene.narrationSegments.filter((segment) => segment.kind !== "placeholder");
+}
+
 function allocateSegments(scene: SceneDocument["scenes"][number], durationInFrames: number): MediaSegmentTiming[] {
-  const segments = scene.narrationSegments;
+  const segments = mediaSegments(scene);
   if (segments.length > durationInFrames) {
     throw new AppError("E_MEDIA_CONFIG", `场景 ${scene.sceneId} 的帧数少于旁白段数，无法生成非零时长字幕`, scene.sceneId);
   }
@@ -47,8 +51,9 @@ function audioSegments(options: {
   const pauseFrames = Math.round(manifest.segmentPauseMs * fps / 1000);
   const scenePauseFrames = Math.round(manifest.scenePauseMs * fps / 1000);
   const result: MediaSegmentTiming[] = [];
+  const narrationSegments = mediaSegments(scene);
   let cursor = 0;
-  for (const [index, segment] of scene.narrationSegments.entries()) {
+  for (const [index, segment] of narrationSegments.entries()) {
     const clip = manifest.clips.find((item) => item.sceneId === scene.sceneId && item.segmentId === segment.segmentId);
     if (!clip) throw new AppError("E_AUDIO", `配音清单缺少片段 ${segment.segmentId}`, segment.segmentId);
     const durationInFrames = millisecondsToFrames(clip.durationMs, fps);
@@ -65,7 +70,7 @@ function audioSegments(options: {
       ...(override?.durationMs !== undefined ? {subtitleDurationMs: override.durationMs} : {}),
     });
     cursor += durationInFrames;
-    if (index < scene.narrationSegments.length - 1) cursor += pauseFrames;
+    if (index < narrationSegments.length - 1) cursor += pauseFrames;
   }
   return {segments: result, durationInFrames: cursor + scenePauseFrames};
 }
@@ -78,15 +83,16 @@ export function buildMediaPlan(
   const scenes: MediaSceneTiming[] = [];
   let sceneFrom = 0;
   if (audio) {
-    const expected = document.scenes.flatMap((scene) => scene.narrationSegments.map((segment) => `${scene.sceneId}/${segment.segmentId}`)).sort();
+    const expected = document.scenes.flatMap((scene) => mediaSegments(scene).map((segment) => `${scene.sceneId}/${segment.segmentId}`)).sort();
     const actual = audio.manifest.clips.map((clip) => `${clip.sceneId}/${clip.segmentId}`).sort();
-    if (JSON.stringify(expected) !== JSON.stringify(actual)) throw new AppError("E_AUDIO", "配音清单与当前脚本片段不一致", "media/speech");
-    const validSegmentIds = new Set(document.scenes.flatMap((scene) => scene.narrationSegments.map((segment) => segment.segmentId)));
+    if (JSON.stringify(expected) !== JSON.stringify(actual)) throw new AppError("E_AUDIO", "配音清单与当前可播放脚本片段不一致；placeholder 只保留审校记录", "media/speech");
+    const validSegmentIds = new Set(document.scenes.flatMap((scene) => mediaSegments(scene).map((segment) => segment.segmentId)));
     const orphan = audio.overrides.find((override) => !validSegmentIds.has(override.segmentId));
     if (orphan) throw new AppError("E_AUDIO", `字幕覆盖指向不存在的片段：${orphan.segmentId}`, orphan.segmentId);
   }
   const overrides = new Map(audio?.overrides.map((override) => [override.segmentId, override]) ?? []);
   for (const scene of document.scenes) {
+    if (mediaSegments(scene).length === 0) continue;
     const allocated = audio
       ? audioSegments({scene, manifest: audio.manifest, overrides, fps: document.video.fps})
       : {segments: allocateSegments(scene, Math.round(scene.durationSeconds * document.video.fps)), durationInFrames: Math.round(scene.durationSeconds * document.video.fps)};
