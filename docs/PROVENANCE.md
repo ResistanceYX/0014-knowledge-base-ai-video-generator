@@ -13,7 +13,7 @@
 | 段落 kind | 允许的 supportStatus | 含义 |
 |---|---|---|
 | `factual` | `supported`／`partially-supported` | 实质性陈述，必须有至少一个节点字段来源；部分支持还需开放问题 |
-| `placeholder` | `needs-evidence` | 待补证占位，无来源，必须有开放问题，不得当成事实发布 |
+| `placeholder` | `needs-evidence` | 待补证占位，无来源，必须有开放问题；只保留审校记录，不进入配音、字幕、画面来源摘要或媒体分段；全占位场景整个省略 |
 | `transition`／`editorial` | `not-applicable` | 转场或制作过程说明，不承载节点事实 |
 
 把 factual 的来源数组清空、给 factual 标 needs-evidence、给 placeholder 标 supported，都会失败。
