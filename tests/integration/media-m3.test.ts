@@ -77,6 +77,35 @@ describe("M3 配音、人工覆盖与发布闸门", () => {
     expect(reusedClip.manuallyReplaced).toBe(true);
   });
 
+  it("待补证占位只留审校记录，不进入无声字幕或 fixture 音轨", async () => {
+    const output = await tempDirectory();
+    const generated = await generateProject({input: FIXTURE, output, synthetic: true, now: FIXED_NOW});
+    const scenes = clone(generated.scenes);
+    const sourceMap = clone(generated.sourceMap);
+    const targetScene = scenes.scenes.find((scene) => scene.sceneId === "scene-death-01")!;
+    const target = targetScene.narrationSegments.find((segment) => segment.segmentId === "seg-death-01-evidence")!;
+    target.kind = "placeholder";
+    const entry = sourceMap.entries.find((item) => item.segmentId === target.segmentId)!;
+    entry.supportStatus = "needs-evidence";
+    entry.sources = [];
+    entry.openQuestion = "合成测试：只验证占位段媒体跳过，不构成真实事实。";
+    await writeFile(generated.paths.scenes, `${JSON.stringify(scenes, null, 2)}\n`, "utf8");
+    await writeFile(generated.paths.sourceMap, `${JSON.stringify(sourceMap, null, 2)}\n`, "utf8");
+
+    const silent = await materializeProject({project: output, refreshDerived: true});
+    const silentScene = silent.plan.scenes.find((scene) => scene.sceneId === targetScene.sceneId)!;
+    expect(silentScene.segments.some((segment) => segment.segmentId === target.segmentId)).toBe(false);
+    expect(await readFile(silent.subtitles.vtt, "utf8")).not.toContain(target.text);
+
+    await writeConfig(output, {mode: "fixture", segmentDurationMs: 60, segmentPauseMs: 0, scenePauseMs: 60});
+    const result = await synthesizeSpeech({project: output});
+    expect(result.manifest.clips).toHaveLength(21);
+    expect(result.manifest.clips.some((clip) => clip.segmentId === target.segmentId)).toBe(false);
+    const audioScene = result.materialized.plan.scenes.find((scene) => scene.sceneId === targetScene.sceneId)!;
+    expect(audioScene.segments.some((segment) => segment.segmentId === target.segmentId)).toBe(false);
+    expect(await readFile(result.materialized.subtitles.vtt, "utf8")).not.toContain(target.text);
+  });
+
   it("音频清单过期时停止，重跑 speech 后复用未变片段", async () => {
     const {output, generated} = await setup();
     await writeConfig(output, {mode: "fixture", segmentDurationMs: 80, segmentPauseMs: 0, scenePauseMs: 0});
