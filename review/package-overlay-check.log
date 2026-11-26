@@ -1,0 +1,56 @@
+CLEAN_M4_OVERLAY_START
+node=v24.22.3
+npm=11.19.0
+
+added 201 packages in 42s
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.1 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+
+> 0014-knowledge-base-ai-video-generator@0.3.0-m3 check
+> npm run typecheck && npm test && npm run build
+
+
+> 0014-knowledge-base-ai-video-generator@0.3.0-m3 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.video.json
+
+
+> 0014-knowledge-base-ai-video-generator@0.3.0-m3 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.1.1 [39m[90m/mnt/agents/work/0014-m5/package-verification-final-2/0014-knowledge-base-ai-video-generator-4d7dc447012b2123da60453b989133017a111a80[39m
+
+ [32m✓[39m tests/integration/media-m3.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 13571[2mms[22m[39m
+   [32m✓[39m M3 配音、人工覆盖与发布闸门 [2m(4)[22m
+     [33m[2m✓[22m[39m fixture 生成可探测音频，术语只改朗读文本，字幕覆盖与人工替换音频生效[33m 6480[2mms[22m[39m
+     [33m[2m✓[22m[39m 待补证占位只留审校记录，不进入无声字幕或 fixture 音轨[33m 2320[2mms[22m[39m
+     [33m[2m✓[22m[39m 音频清单过期时停止，重跑 speech 后复用未变片段[33m 4744[2mms[22m[39m
+ [32m✓[39m tests/unit/media-m3.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/script-provenance.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+ [32m✓[39m tests/integration/project.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 268[2mms[22m[39m
+ [32m✓[39m tests/unit/media.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/integration/media.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 262[2mms[22m[39m
+ [32m✓[39m tests/unit/node-schema.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m tests/unit/input.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/remote-snapshot.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/cost.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 57[2mms[22m[39m
+ [32m✓[39m tests/unit/upstream-validation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m tests/unit/script-writer-contract.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m tests/unit/limits.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[32m58 passed[39m[22m[90m (58)[39m
+[2m   Start at [22m 19:48:48
+[2m   Duration [22m 20.08s[2m (tests 78%, transform 11%, import 11%)[22m
+
+[2m    Isolate [22m [33m13 workers spawned[39m[2m · ~97ms startup each (spawn + environment, per file)[22m
+[2m            [22m [2mat least ~1.17s faster with [22m[33misolate: false[39m[2m — reuses workers across files instead of one per file[22m
+
+
+> 0014-knowledge-base-ai-video-generator@0.3.0-m3 build
+> tsc -p tsconfig.build.json
+
+OVERLAY_BYTE_COMPARISON_PASSED files=169 patch_files=22
+OVERLAY_VERIFICATION_PASSED

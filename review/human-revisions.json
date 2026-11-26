@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.1.0",
+  "rounds": [
+    {
+      "round": 1,
+      "kind": "editor-guided-ai-revision",
+      "reviewer": "ResistanceYX",
+      "recordedAt": "2026-11-25T11:32:58Z",
+      "feedback": "看过了，问题不大，缺失内容跳过即可，不必补编，我等下在母仓库复核机制里加入确实内容补编规则",
+      "interpretedDecision": "本轮只执行“缺失内容跳过即可，不必补编”：原节点未填写的需求证据类型和结论边界继续保留缺失事实，但不进入口播、字幕、画面来源摘要或成片媒体分段。",
+      "upstreamRuleStatus": "母仓库补编规则由主编稍后自行加入；本记录不声称该规则已经加入，也不替主编改写母仓库规则。",
+      "changes": [
+        "保留 seg-demand-missing 与 seg-conclusion-boundary-missing 两个 placeholder 及其 needs-evidence 来源记录。",
+        "从画面草稿移除两处缺失提示，媒体计划只使用非 placeholder 片段。",
+        "通用管线同步跳过 placeholder 配音、字幕和画面来源摘要；全占位场景整个省略，旧片段清单和孤立字幕覆盖安全停止。",
+        "scene-evidence-limits 的建议时长由 15 秒降为 8 秒；总建议时长由 83 秒降为 76 秒，仍不是实测时长。",
+        "结尾过程性文案由“未经人工审核”改为“尚未最终批准”，避免抹除本轮真实主编反馈，同时不冒充最终批准。"
+      ],
+      "reviewState": {
+        "script": "changes-requested",
+        "placeholderEntries": "changes-requested",
+        "otherEntries": "unreviewed",
+        "approvedEntries": 0,
+        "finalApprovalGranted": false
+      },
+      "metrics": {
+        "before": {
+          "scriptCharacters": 401,
+          "estimatedMediaCharacters": 401,
+          "estimatedMediaSegments": 11,
+          "suggestedSeconds": 83
+        },
+        "after": {
+          "scriptCharactersIncludingReviewOnlyPlaceholders": 401,
+          "reviewOnlyPlaceholderCharacters": 34,
+          "estimatedMediaCharacters": 367,
+          "estimatedMediaSegments": 9,
+          "reviewOnlyPlaceholderSegments": 2,
+          "suggestedSeconds": 76,
+          "durationMeasured": false
+        }
+      },
+      "validation": {
+        "script": "passed",
+        "log": "review/human-round1-validation.log",
+        "codeCheck": "review/code-check.log"
+      },
+      "externalStages": {
+        "realSpeechRun": false,
+        "fullRenderRun": false,
+        "uploadOrPublish": false,
+        "stageBackup": false
+      }
+    }
+  ]
+}

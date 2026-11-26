@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "ai-assisted-condensation",
+  "humanReview": false,
+  "manualRevisionRounds": 0,
+  "before": {
+    "scenes": 9,
+    "segments": 23,
+    "characters": 2935,
+    "suggestedSeconds": 626
+  },
+  "after": {
+    "scenes": 9,
+    "segments": 11,
+    "characters": 401,
+    "suggestedSeconds": 83
+  },
+  "method": "每条死法合并为一段；完整证据、推理和备注原文保留在 source-map.json 的指针、摘录和 qualifiers 中。",
+  "durationNote": "建议时长按约5字符/秒估算，未生成真实音频，不是实测成片时长。",
+  "validation": {
+    "status": "passed",
+    "scenes": 9,
+    "entries": 11
+  }
+}

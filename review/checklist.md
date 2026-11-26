@@ -11,3 +11,5 @@
 - [ ] 如修改 scenes.json，已同步检查 source-map.json，并运行 validate-script。
 
 当前机器记录的整稿状态：`changes-requested`。主编已要求两处缺失占位跳过媒体且不补编，AI 已执行并等待最终复审；生成器不会自行把状态改为 approved。
+
+

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.1.0",
+  "baselineCommit": "4d7dc447012b2123da60453b989133017a111a80",
+  "baselineFiles": 166,
+  "currentFiles": 169,
+  "added": [
+    "src/provenance/upstream-validation.ts",
+    "tests/unit/upstream-validation.test.ts",
+    "video-template/media.ts"
+  ],
+  "replaced": [
+    "README.md",
+    "docs/PROVENANCE.md",
+    "docs/SPEECH.md",
+    "schemas/scene-schema.json",
+    "src/cli.ts",
+    "src/index.ts",
+    "src/media/synthesize.ts",
+    "src/media/timeline.ts",
+    "src/node-schema/validate.ts",
+    "src/project.ts",
+    "src/script/narration.ts",
+    "src/script/template.ts",
+    "src/types.ts",
+    "tests/helpers.ts",
+    "tests/integration/media-m3.test.ts",
+    "tests/integration/project.test.ts",
+    "tests/unit/media-m3.test.ts",
+    "tests/unit/node-schema.test.ts",
+    "video-template/Video.tsx"
+  ],
+  "deleted": [],
+  "archiveFiles": 22,
+  "archiveSha256": "48f08d3e6d1205b74bf9ac199d8facd5456bb07f9a9d1a5319835caf8f801e8f"
+}

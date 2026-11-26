@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1.0",
+  "scope": "在一次性无声副本中运行 materialize；正式审校工程未生成 media、video、audio 或 speech 产物。未调用真实配音，未渲染。",
+  "result": "passed",
+  "speechMode": "none",
+  "scenesInMediaPlan": 9,
+  "playableSegments": 9,
+  "playableCharacters": 367,
+  "scriptCharactersIncludingReviewOnlyPlaceholders": 401,
+  "reviewOnlyPlaceholders": [
+    "seg-demand-missing",
+    "seg-conclusion-boundary-missing"
+  ],
+  "placeholderMediaSegments": 0,
+  "placeholderSubtitleCues": 0,
+  "estimatedSeconds": 76,
+  "durationMeasured": false,
+  "fullDurationInFrames": 2280,
+  "note": "76 秒仍是无声估算时间轴，不是实际配音或成片实测时长。"
+}
