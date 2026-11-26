@@ -1,6 +1,0 @@
-
-> 0014-knowledge-base-ai-video-generator@0.3.0-m3 validate-script
-> npm run build --silent && node dist/cli.js validate-script --project /mnt/agents/work/0014-m5/0001-production/generated/0001-dafeiyu-cyber-cemetery --refresh-derived
-
-校验通过：9 个场景，11 条逐句来源。
-整稿状态：changes-requested；派生阅读视图已重建。未触发配音、付费 API、渲染或发布。

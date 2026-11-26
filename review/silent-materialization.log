@@ -1,7 +1,0 @@
-
-> 0014-knowledge-base-ai-video-generator@0.3.0-m3 materialize
-> npm run build --silent && node dist/cli.js materialize --project /mnt/agents/work/0014-m5/0001-production/verification/0001-silent-round1-final
-
-可编辑工程已物化（仅本地）：/mnt/agents/work/0014-m5/0001-production/verification/0001-silent-round1-final/video
-9 个场景，完整时间轴 2280 帧；组件默认保留。
-SpeechMode=none；对齐=estimated；音频片段=0；本次物化外部调用 0 次。
