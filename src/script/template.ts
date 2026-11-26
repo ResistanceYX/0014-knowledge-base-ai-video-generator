@@ -43,7 +43,7 @@ function visualText(value: string, max = 240): string {
 }
 
 function sceneDuration(segments: NarrationSegment[]): number {
-  const characters = segments.reduce((sum, segment) => sum + segment.text.length, 0);
+  const characters = segments.filter((segment) => segment.kind !== "placeholder").reduce((sum, segment) => sum + segment.text.length, 0);
   return Math.min(120, Math.max(3, Math.ceil(characters / 4)));
 }
 
@@ -117,7 +117,7 @@ export class TemplateScriptWriter implements ScriptWriter {
     add(makeScene(1, "scene-title", "Title", node.标题, [
       `#${node.编号} · ${node.领域}／${node.子领域}`,
       `${node.档案类型} · ${node.复活状态}`,
-      ...(boundary ? [boundaryQualifier(boundary)] : ["原节点未填写结论边界"]),
+      ...(boundary ? [boundaryQualifier(boundary)] : []),
     ], [factual(
       "seg-title",
       `这是第 ${node.编号} 号节点《${node.标题}》。节点档案类型为${node.档案类型}，记录的复活状态为${node.复活状态}；领域为${node.领域}，子领域为${node.子领域}。`,
@@ -222,7 +222,7 @@ export class TemplateScriptWriter implements ScriptWriter {
       ["证据链接的公开可访问不等于内容真实，也不等于获得改编授权。"],
     ));
     add(makeScene(scenes.length + 1, "scene-evidence-limits", "EvidenceAndLimits", "证据与限定条件", [
-      ...(boundary ? [boundaryQualifier(boundary)] : ["结论边界缺失：保留待补证标记"]),
+      ...(boundary ? [boundaryQualifier(boundary)] : []),
       ...(note ? [noteQualifier(note)] : []),
       "只读取节点本身；未遍历外部证据链接。",
     ], evidenceDrafts));

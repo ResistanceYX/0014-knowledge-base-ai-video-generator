@@ -18,7 +18,8 @@ export function renderNarration(scenes: SceneDocument): string {
     lines.push(`## ${scene.order}. ${scene.visual.heading}`, "");
     lines.push(`- 场景：\`${scene.sceneId}\`（${scene.type}）`, `- 建议时长：${scene.durationSeconds} 秒`, "");
     for (const segment of scene.narrationSegments) {
-      lines.push(`### \`${segment.segmentId}\` · ${segment.kind}`, "", segment.text, "");
+      const kind = segment.kind === "placeholder" ? "placeholder（仅审校保留，媒体跳过）" : segment.kind;
+      lines.push(`### \`${segment.segmentId}\` · ${kind}`, "", segment.text, "");
     }
     lines.push("**画面草稿**", "");
     scene.visual.bodyLines.forEach((line) => lines.push(`- ${line}`));
