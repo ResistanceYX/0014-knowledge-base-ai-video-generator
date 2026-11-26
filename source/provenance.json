@@ -1,0 +1,29 @@
+{
+  "sourceType": "github-public-node",
+  "originalUrl": "https://github.com/ResistanceYX/idea-tree/blob/adcac69e04ec0781227e2218c75ab3fef6347a9d/nodes/0001-dafeiyu-cyber-cemetery.yaml",
+  "normalizedUrl": "https://raw.githubusercontent.com/ResistanceYX/idea-tree/adcac69e04ec0781227e2218c75ab3fef6347a9d/nodes/0001-dafeiyu-cyber-cemetery.yaml",
+  "commit": "adcac69e04ec0781227e2218c75ab3fef6347a9d",
+  "retrievedAt": "2026-11-24T17:24:23.015Z",
+  "fileSha256": "663ec634d21177ce044ee00499275b9e0d9c4414d161af42664c39193611e20e",
+  "nodeFormatVersion": "idea-tree-node-format-v1.9",
+  "parserVersion": "0.1.0-m1",
+  "license": {
+    "spdxId": "CC-BY-SA-4.0",
+    "referenceUrl": "https://github.com/ResistanceYX/idea-tree/blob/adcac69e04ec0781227e2218c75ab3fef6347a9d/LICENSE.md",
+    "notice": "已读取同一 commit 的 LICENSE.md 并确认 CC BY-SA 4.0；署名与相同方式共享义务仍需发布者履行，节点引用的第三方材料不因此自动获得改编授权。"
+  },
+  "upstreamValidation": {
+    "schemaVersion": "0.1.0",
+    "repository": "ResistanceYX/idea-tree",
+    "commit": "adcac69e04ec0781227e2218c75ab3fef6347a9d",
+    "validatedAt": "2026-11-24T17:06:33Z",
+    "status": "passed",
+    "commands": [
+      "python3 scripts/validate.py --root .",
+      "python3 scripts/generate_index.py --root . --check"
+    ],
+    "log": "source_commit=adcac69e04ec0781227e2218c75ab3fef6347a9d\nvalidated_at=2026-11-24T17:06:33Z\npython=Python 3.12.12\ncommand=python3 scripts/validate.py --root .\n检查汇总：节点 43 个，死法 228 条，不同证据链接 356 个，链接出现 754 次，错误 0 个，警告 0 个。\ncommand=python3 scripts/generate_index.py --root . --check\n索引检查通过：INDEX.md 与 43 个节点及统计一致。\nUPSTREAM_VALIDATION_PASSED\n",
+    "logSha256": "f0b8e23f7432847935d0571d7255bfd686c4b0a3206cbf47bc8585f384ba9023",
+    "note": "只证明固定 commit 的上游完整校验记录内部一致；不是上游签名，不证明外部事实为真，也不替代逐句人工审校。"
+  }
+}
