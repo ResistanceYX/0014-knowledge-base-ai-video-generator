@@ -3,8 +3,9 @@ import {buildMediaPlan, scriptRevision} from "../../src/media/timeline.js";
 import {renderVtt} from "../../src/media/subtitles.js";
 import {parseMediaConfig} from "../../src/media/config.js";
 import {buildVideoMetadata} from "../../src/media/publish.js";
+import {mediaSourceEntries} from "../../video-template/media.js";
 import type {SpeechManifest} from "../../src/types.js";
-import {expectCode, makeBundle} from "../helpers.js";
+import {clone, expectCode, makeBundle} from "../helpers.js";
 
 async function audioFixture() {
   const bundle = await makeBundle();
@@ -69,6 +70,50 @@ describe("M3 真实音频时间轴与发布元数据", () => {
     await expectCode(() => Promise.resolve(buildMediaPlan(bundle.scenes, revision, {manifest, overrides: [{segmentId: "missing", text: "x"}]})), "E_AUDIO");
     const incomplete = {...manifest, clips: manifest.clips.slice(1)};
     await expectCode(() => Promise.resolve(buildMediaPlan(bundle.scenes, revision, {manifest: incomplete, overrides: []})), "E_AUDIO");
+  });
+
+  it("全占位场景不进媒体计划，旧片段清单与孤立覆盖会停止", async () => {
+    const {bundle, revision, manifest} = await audioFixture();
+    const scenes = clone(bundle.scenes);
+    const target = scenes.scenes[1]!;
+    target.narrationSegments.forEach((segment) => {
+      segment.kind = "placeholder";
+    });
+
+    const silent = buildMediaPlan(scenes, revision);
+    expect(silent.scenes.some((scene) => scene.sceneId === target.sceneId)).toBe(false);
+    expect(silent.scenes).toHaveLength(bundle.scenes.scenes.length - 1);
+    expect(silent.fullDurationInFrames).toBeGreaterThan(0);
+    const vtt = renderVtt(scenes, silent);
+    target.narrationSegments.forEach((segment) => expect(vtt).not.toContain(segment.text));
+
+    const reducedManifest = {
+      ...manifest,
+      clips: manifest.clips.filter((clip) => clip.sceneId !== target.sceneId),
+    };
+    const audioPlan = buildMediaPlan(scenes, revision, {manifest: reducedManifest, overrides: []});
+    expect(audioPlan.scenes.some((scene) => scene.sceneId === target.sceneId)).toBe(false);
+    expect(audioPlan.speech.clipCount).toBe(manifest.clips.length - target.narrationSegments.length);
+    await expectCode(() => Promise.resolve(buildMediaPlan(scenes, revision, {manifest, overrides: []})), "E_AUDIO");
+    await expectCode(() => Promise.resolve(buildMediaPlan(scenes, revision, {
+      manifest: reducedManifest,
+      overrides: [{segmentId: target.narrationSegments[0]!.segmentId, text: "不应出现的占位字幕"}],
+    })), "E_AUDIO");
+  });
+
+  it("画面来源摘要只接收实际可播放片段", async () => {
+    const {bundle, revision, manifest} = await audioFixture();
+    const scenes = clone(bundle.scenes);
+    const targetScene = scenes.scenes.find((scene) => scene.sceneId === "scene-death-01")!;
+    const target = targetScene.narrationSegments[0]!;
+    target.kind = "placeholder";
+    const reducedManifest = {...manifest, clips: manifest.clips.filter((clip) => clip.segmentId !== target.segmentId)};
+    const plan = buildMediaPlan(scenes, revision, {manifest: reducedManifest, overrides: []});
+    const timing = plan.scenes.find((scene) => scene.sceneId === targetScene.sceneId)!;
+    const entries = mediaSourceEntries(bundle.sourceMap.entries, targetScene.sceneId, timing);
+    expect(entries).toHaveLength(targetScene.narrationSegments.length - 1);
+    expect(entries.some((entry) => entry.segmentId === target.segmentId)).toBe(false);
+    expect(new Set(entries.map((entry) => entry.segmentId))).toEqual(new Set(timing.segments.map((segment) => segment.segmentId)));
   });
 
   it("配置只开放 fixture 与一种真实服务，并限制声音、语速和重试", async () => {
