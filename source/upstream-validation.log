@@ -1,8 +1,0 @@
-source_commit=adcac69e04ec0781227e2218c75ab3fef6347a9d
-validated_at=2026-11-24T17:06:33Z
-python=Python 3.12.12
-command=python3 scripts/validate.py --root .
-检查汇总：节点 43 个，死法 228 条，不同证据链接 356 个，链接出现 754 次，错误 0 个，警告 0 个。
-command=python3 scripts/generate_index.py --root . --check
-索引检查通过：INDEX.md 与 43 个节点及统计一致。
-UPSTREAM_VALIDATION_PASSED
